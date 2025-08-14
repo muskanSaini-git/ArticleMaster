@@ -1762,63 +1762,6 @@ const ArticleParcelViewModal = ({
           }}>
             {/* Buttons row */}
             <div style={{ display: 'flex', gap: '0.25rem', margin: '0.25rem 0', alignItems: 'center', flexWrap: 'wrap' }}>
-              {/* Helpful text for Article Creation and Admin roles */}
-              {(userRole === 'article_creation' || userRole === 'admin') && !isEdit && (
-                <div style={{
-                  width: '100%',
-                  marginBottom: '1rem',
-                  padding: '1rem',
-                  backgroundColor: '#f0f9ff',
-                  border: '1px solid #0ea5e9',
-                  borderRadius: '8px',
-                  color: '#0c4a6e',
-                  fontSize: '14px'
-                }}>
-                  <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                    <div>
-                      {userRole === 'admin' ? (
-                        <>
-                          <strong>👑 Admin Article Creation:</strong> Fill in the article details below. 
-                          When you click "Insert Article", the article will be automatically{' '}
-                          <span style={{color: '#10b981', fontWeight: 'bold'}}>APPROVED</span> 
-                          with "Approved" status.
-                        </>
-                      ) : (
-                        <>
-                          <strong>📝 Article Creation Form:</strong> Fill in the article details below. 
-                          When you click "Insert Article", the article will be saved to the database 
-                          with "Pending" status and sent for approval.
-                        </>
-                      )}
-                    </div>
-                    <button 
-                      onClick={stableHandleClose}
-                      style={{
-                        background: 'none',
-                        border: 'none',
-                        color: '#0ea5e9',
-                        cursor: 'pointer',
-                        fontSize: '16px',
-                        fontWeight: 'bold',
-                        padding: '4px 8px',
-                        borderRadius: '4px',
-                        transition: 'all 0.2s ease'
-                      }}
-                      onMouseEnter={(e) => {
-                        e.target.style.backgroundColor = '#0ea5e9';
-                        e.target.style.color = 'white';
-                      }}
-                      onMouseLeave={(e) => {
-                        e.target.style.backgroundColor = 'transparent';
-                        e.target.style.color = '#0ea5e9';
-                      }}
-                      title="Close Form"
-                    >
-                      ✕
-                    </button>
-                  </div>
-                </div>
-              )}
               
               <label className="btn btn-outline-primary mb-0" style={{
                 borderColor: '#8b5cf6',
