@@ -10,11 +10,6 @@ const Layout = ({ children, currentPage, onPageChange, accessiblePages = [], use
   const [masterModalOpen, setMasterModalOpen] = useState(false);
   const [selectedMasterType, setSelectedMasterType] = useState(null);
 
-  // Debug logging
-  console.log('🔍 Layout Debug - User:', user);
-  console.log('🔍 Layout Debug - User role:', user?.role);
-  console.log('🔍 Layout Debug - Accessible pages:', accessiblePages);
-
   const allMenuItems = [
     // Regular items - show for approval, purchase, merchant, and admin roles
     ...(user?.role === 'approval' || user?.role === 'purchase' || user?.role === 'merchant' || user?.role === 'admin' ? [
@@ -77,52 +72,6 @@ const Layout = ({ children, currentPage, onPageChange, accessiblePages = [], use
       }
     ] : [])
   ];
-
-  // Debug: Log the Master menu construction check
-  console.log('🔍 Layout Debug - Master menu construction check:', {
-    userRole: user?.role,
-    isAdmin: user?.role === 'admin',
-    masterMenuItems: allMenuItems.filter(item => item.id === 'master'),
-    totalMenuItems: allMenuItems.length
-  });
-
-  // Test: Force add Master menu for debugging
-  if (user?.role === 'admin' && !allMenuItems.find(item => item.id === 'master')) {
-    console.log('⚠️ Master menu not found in allMenuItems, forcing addition...');
-    allMenuItems.push({
-      id: 'master',
-      label: 'Master',
-      icon: <FaCog />,
-      subItems: [
-        { id: 'master_segments', label: 'Segments', icon: <FaList /> },
-        { id: 'master_divisions', label: 'Divisions', icon: <FaList /> },
-        { id: 'master_subdivisions', label: 'Sub Divisions', icon: <FaList /> },
-        { id: 'master_categories', label: 'Major Categories', icon: <FaList /> },
-        { id: 'master_descriptions', label: 'MC Descriptions', icon: <FaList /> },
-        { id: 'master_mcst', label: 'MCST Details', icon: <FaList /> },
-        { id: 'master_vendors', label: 'Vendors', icon: <FaList /> },
-        { id: 'master_seasons', label: 'Seasons', icon: <FaList /> },
-        { id: 'master_colors', label: 'Colors', icon: <FaList /> },
-        { id: 'master_sizes', label: 'Sizes', icon: <FaList /> }
-      ]
-    });
-  }
-
-  console.log('🔍 Layout Debug - All menu items:', allMenuItems);
-  console.log('🔍 Layout Debug - Sidebar open state:', sidebarOpen);
-  // Filter menu items based on accessible pages, but always include Master for admin users
-  const menuItems = allMenuItems.filter(item => {
-    // Always include Master menu for admin users
-    if (item.id === 'master' && user?.role === 'admin') {
-      return true;
-    }
-    // For other items, check if they're in accessible pages
-    return accessiblePages.includes(item.id);
-  });
-  
-  console.log('🔍 Layout Debug - Menu items after filtering:', menuItems);
-  console.log('🔍 Layout Debug - Accessible pages:', accessiblePages);
-  console.log('🔍 Layout Debug - Master menu in filtered items:', menuItems.filter(item => item.id === 'master'));
 
   const toggleSidebar = () => {
     setSidebarOpen(!sidebarOpen);
@@ -213,7 +162,7 @@ const Layout = ({ children, currentPage, onPageChange, accessiblePages = [], use
 
         {/* Navigation Menu */}
         <nav className="nav-menu">
-          {menuItems.map((item) => (
+          {allMenuItems.map((item) => (
             <div key={item.id} className="nav-item">
               {item.subItems ? (
                 // Menu item with sub-items (Master tab)
