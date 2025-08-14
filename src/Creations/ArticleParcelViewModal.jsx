@@ -1545,6 +1545,14 @@ const ArticleParcelViewModal = ({
           CREATED_BY: userRole || 'article_creation'
         }));
         
+        // Show admin auto-approval message
+        if (userRole === 'admin') {
+          const adminMessage = `👑 Admin Auto-Approval: Article automatically approved with status "Approved"`;
+          if (window.showToast) {
+            window.showToast(adminMessage, 'info');
+          }
+        }
+        
         onSave(transformedRows);
       }
       
@@ -1768,7 +1776,11 @@ const ArticleParcelViewModal = ({
                 }}>
                   <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
                     <div>
-                      <strong>📝 Article Creation Form:</strong> Fill in the article details below. When you click "Insert Article", the article will be saved to the database with "Pending" status and sent for approval.
+                      {userRole === 'admin' ? (
+                        <strong>👑 Admin Article Creation:</strong> Fill in the article details below. When you click "Insert Article", the article will be automatically <strong style={{color: '#10b981'}}>APPROVED</strong> with "Approved" status.
+                      ) : (
+                        <strong>📝 Article Creation Form:</strong> Fill in the article details below. When you click "Insert Article", the article will be saved to the database with "Pending" status and sent for approval.
+                      )}
                     </div>
                     <button 
                       onClick={stableHandleClose}
