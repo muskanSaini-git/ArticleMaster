@@ -524,12 +524,12 @@ const ArticleParcelApproval = () => {
           {/* Search Bar */}
           <div className="modern-search">
             <FiSearch className="modern-search-icon" />
-            <input
-              type="text"
-              placeholder="Search articles, suppliers, LPO, article codes, descriptions..."
-              value={searchQuery}
-              onChange={(e) => setSearchQuery(e.target.value)}
-            />
+          <input
+            type="text"
+              placeholder="Search articles, suppliers, LPO, etc…"
+            value={searchQuery}
+            onChange={(e) => setSearchQuery(e.target.value)}
+          />
         </div>
 
           {/* Status Summary */}

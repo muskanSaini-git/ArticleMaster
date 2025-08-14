@@ -2193,10 +2193,10 @@ const ArticleParcel = ({ userRole, currentTab = 1 }) => {
             <FiSearch className="modern-search-icon" />
         <input
           type="text"
-          placeholder="Search articles, suppliers, LPO, article codes, descriptions..."
+                  placeholder="Search articles, suppliers, LPO, etc…"
           value={searchQuery}
           onChange={(e) => setSearchQuery(e.target.value)}
-        />
+                />
               </div>
 
           {/* Action Buttons */}

@@ -179,6 +179,7 @@ const Layout = ({ children, currentPage, onPageChange, accessiblePages = [], use
 
   return (
     <div className="layout">
+      {/* Force Vercel redeploy - UI fixes applied */}
       {/* Sidebar */}
       <div 
         className={`sidebar ${sidebarOpen ? 'open' : ''}`}
@@ -269,7 +270,12 @@ const Layout = ({ children, currentPage, onPageChange, accessiblePages = [], use
 
       {/* Main Content */}
       <div 
-        className={`main-content ${sidebarOpen ? 'sidebar-open' : 'sidebar-closed'}`}
+        className="main-content"
+        style={{
+          marginLeft: sidebarOpen ? '240px' : '0',
+          width: sidebarOpen ? 'calc(100% - 240px)' : '100%',
+          minHeight: '100vh'
+        }}
         onClick={() => { if (sidebarOpen) closeSidebar(); }}
       >
         {/* TopBar */}
@@ -281,7 +287,7 @@ const Layout = ({ children, currentPage, onPageChange, accessiblePages = [], use
         />
         
         {/* Content Area */}
-        <div className={`content-area ${sidebarOpen ? 'sidebar-open' : 'sidebar-closed'}`}>
+        <div className="content-area">
           {childrenWithProps}
         </div>
       </div>
