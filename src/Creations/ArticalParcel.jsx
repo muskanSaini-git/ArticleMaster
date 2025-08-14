@@ -3,6 +3,7 @@ import * as XLSX from "xlsx";
 import axios from "axios";
 import { FiEye, FiTrash, FiEdit, FiPlay, FiSearch, FiDownload, FiUpload, FiPlus, FiPackage, FiClock, FiRefreshCw, FiList } from "react-icons/fi";
 import ArticleParcelViewModal from "./ArticleParcelViewModal.jsx";
+import ViewModal from "../components/ViewModal.jsx";
 import { FaCheckCircle, FaTimesCircle, FaHourglassHalf, FaInfoCircle, FaEye, FaEdit, FaTrash } from "react-icons/fa";
 import "./ArticalParcel.css";
 import config from "../config";
@@ -2217,6 +2218,21 @@ const ArticleParcel = ({ userRole, currentTab = 1 }) => {
     }
   };
 
+  const [viewModalData, setViewModalData] = useState(null);
+  const [sectionVisibility, setSectionVisibility] = useState({
+    basic: true,
+    additional: false,
+    status: false
+  });
+
+  // Toggle section visibility for ViewModal
+  const toggleSection = (sectionName) => {
+    setSectionVisibility(prev => ({
+      ...prev,
+      [sectionName]: !prev[sectionName]
+    }));
+  };
+
   return (
     <div className="article-parcel-container">
       {loading && (
@@ -2551,7 +2567,7 @@ const ArticleParcel = ({ userRole, currentTab = 1 }) => {
                           <button
                             className="modern-action-btn modern-action-btn-view"
                               onClick={() => { 
-                                setSelectedRow(row); 
+                                setViewModalData(row); 
                                 setViewModalOpen(true); 
                               }}
                             title="View Details"
@@ -2609,7 +2625,7 @@ const ArticleParcel = ({ userRole, currentTab = 1 }) => {
                           <button
                             className="modern-action-btn modern-action-btn-view"
                             onClick={() => { 
-                              setSelectedRow(row); 
+                              setViewModalData(row); 
                               setViewModalOpen(true); 
                             }}
                             title="View Details"
@@ -2779,14 +2795,13 @@ const ArticleParcel = ({ userRole, currentTab = 1 }) => {
         </div>
       </div>
       {/* Modals and other components remain unchanged */}
-      <ArticleParcelViewModal
-        open={viewModalOpen}
+      <ViewModal
+        isOpen={viewModalOpen}
         onClose={() => setViewModalOpen(false)}
-        rowData={selectedRow}
-        columnDefinitions={columnDefinitions}
-        onSave={handleSaveRowDetails}
-        readOnly={true}
-        userRole={userRole}
+        selectedItem={viewModalData}
+        sectionVisibility={sectionVisibility}
+        toggleSection={toggleSection}
+        statusBadge={statusBadge}
       />
       <ArticleParcelViewModal
         open={excelModalOpen}
@@ -3037,6 +3052,15 @@ const ArticleParcel = ({ userRole, currentTab = 1 }) => {
         </div>
       )}
 
+      {/* ViewModal for viewing article details */}
+      <ViewModal
+        isOpen={viewModalOpen}
+        onClose={() => setViewModalOpen(false)}
+        selectedItem={viewModalData}
+        sectionVisibility={sectionVisibility}
+        toggleSection={toggleSection}
+        statusBadge={statusBadge}
+      />
 
     </div>
   );
