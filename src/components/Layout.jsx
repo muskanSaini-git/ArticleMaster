@@ -189,9 +189,8 @@ const Layout = ({ children, currentPage, onPageChange, accessiblePages = [], use
           left: 0,
           top: 0,
           height: '100vh',
-          width: '300px',
-          background: '#ffffff',
-          border: '2px solid blue' // Add blue border to make it visible
+          width: '240px',
+          background: '#ffffff'
         }}
       >
         {/* Logo and Title */}
@@ -272,10 +271,11 @@ const Layout = ({ children, currentPage, onPageChange, accessiblePages = [], use
       <div 
         className="main-content"
         style={{
-          marginLeft: sidebarOpen ? '300px' : '0',
-          width: sidebarOpen ? 'calc(100% - 300px)' : '100%',
+          marginLeft: sidebarOpen ? '240px' : '0',
+          width: sidebarOpen ? 'calc(100% - 240px)' : '100%',
           minHeight: '100vh'
         }}
+        onClick={() => { if (sidebarOpen) closeSidebar(); }}
       >
         {/* TopBar */}
         <TopBar 
@@ -290,6 +290,14 @@ const Layout = ({ children, currentPage, onPageChange, accessiblePages = [], use
           {childrenWithProps}
         </div>
       </div>
+
+      {/* Click-outside overlay to close sidebar */}
+      {sidebarOpen && (
+        <div
+          onClick={closeSidebar}
+          style={{ position: 'fixed', inset: 0, background: 'transparent', zIndex: 999 }}
+        />
+      )}
 
       {/* Master Modal */}
       {masterModalOpen && selectedMasterType && (
