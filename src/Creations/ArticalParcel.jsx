@@ -584,19 +584,12 @@ const ArticleParcel = ({ userRole, currentTab = 1 }) => {
             
             // Debug logging for first few articles
             if (filtered.length < 3) {
-              console.log('🔍 Article Creation Filter Debug:', {
-                articleId: article.ArticleId,
-                createdBy: article.CREATED_BY,
-                status: article.STATUS,
-                isOwnArticle,
-                isNewOrDraft,
-                shouldShow
-              });
+              // Debug logging removed
             }
             
             return shouldShow;
           });
-          console.log(`📊 Article Creation Role - Articles Tab: Showing ${filtered.length} out of ${articleRows.length} total articles`);
+          // Debug logging removed
           break;
         case 2: // Pending Article (sent for approval but not approved)
           filtered = articleRows.filter(article => 
@@ -2385,22 +2378,10 @@ const ArticleParcel = ({ userRole, currentTab = 1 }) => {
               </tr>
             </thead>
             <tbody>
-              {(() => {
-                console.log('Table Debug:', {
-                  articleRowsLength: articleRows.length,
-                  displayedArticlesLength: displayedArticles.length,
-                  filteredDataLength: filteredData.length,
-                  paginatedDataLength: paginatedData.length,
-                  currentFilter: currentFilter
-                });
-                return null;
-              })()}
               {paginatedData.length === 0 ? (
                 <tr>
                     <td colSpan={mainTableColumns.length + 2}>
-                      No data found. 
-                      <br />
-                      <small>Debug: Total = {articleRows.length}, Displayed = {displayedArticles.length}, Filtered = {filteredData.length}, Filter = {currentFilter}</small>
+                      
                     </td>
                 </tr>
               ) : (
@@ -2432,16 +2413,10 @@ const ArticleParcel = ({ userRole, currentTab = 1 }) => {
                         
                         const actualField = fieldMap[header] || header;
                         
-                        console.log('🔍 Field mapping debug:', {
-                          header,
-                          actualField,
-                          hasField: actualField in row,
-                          rowKeys: Object.keys(row),
-                          value: row[actualField]
-                        });
+                        // Debug logging removed
                         
                         const cellValue = row[actualField];
-                        console.log('Rendering cell:', { header, actualField, cellValue, hasValue: cellValue !== undefined && cellValue !== null });
+                        // Debug logging removed
                         
                         // Fallback display if field is missing
                         const displayValue = cellValue !== undefined && cellValue !== null ? cellValue : `[No ${actualField}]`;
@@ -2464,7 +2439,7 @@ const ArticleParcel = ({ userRole, currentTab = 1 }) => {
                                   })()
                               : header === "Images"
                                 ? (() => {
-                                    console.log('🖼️ Processing images for row:', row.ArticleId, 'Images field:', row.Images);
+                                    // Debug logging removed
                                     
                                     const imagesArr =
                                       typeof row.Images === 'string'
@@ -2473,8 +2448,8 @@ const ArticleParcel = ({ userRole, currentTab = 1 }) => {
                                           ? row.Images.filter(img => img && img !== 'null' && img !== 'undefined' && img !== '')
                                           : [];
                                     
-                                    console.log('🖼️ Processed images array:', imagesArr);
-                                   
+                                    // Debug logging removed
+                                    
                                    if (!imagesArr || imagesArr.length === 0) {
                                      return (
                                        <div className="modern-image-placeholder">

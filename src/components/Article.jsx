@@ -279,7 +279,7 @@ const Article = () => {
               {paginatedData.length === 0 ? (
                 <tr>
                   <td colSpan="9">
-                    No data found.
+                    
                   </td>
                 </tr>
               ) : (

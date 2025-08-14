@@ -594,9 +594,7 @@ const ArticleParcelApproval = () => {
                 {paginatedData.length === 0 ? (
                   <tr>
                     <td colSpan={mainTableColumns.length + 2}>
-                      No data found. 
-                      <br />
-                      <small>Debug: Total = {articleRows.length}, Displayed = {displayedArticles.length}, Filtered = {filteredData.length}, Filter = {currentFilter}</small>
+                      
                     </td>
                   </tr>
                 ) : (
