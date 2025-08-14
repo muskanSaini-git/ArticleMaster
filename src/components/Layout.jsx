@@ -5,7 +5,7 @@ import './Layout.css';
 import MasterDropdown from './MasterDropdown'; // Added MasterDropdown import
 
 const Layout = ({ children, currentPage, onPageChange, accessiblePages = [], user, onLogout }) => {
-  const [sidebarOpen, setSidebarOpen] = useState(true); // Restore sidebar to be visible by default
+  const [sidebarOpen, setSidebarOpen] = useState(false); // Hide sidebar by default
   const [expandedMenu, setExpandedMenu] = useState(null);
   const [masterModalOpen, setMasterModalOpen] = useState(false);
   const [selectedMasterType, setSelectedMasterType] = useState(null);
