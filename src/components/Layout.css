@@ -177,15 +177,20 @@
   position: relative;
   z-index: 1;
   padding-top: 80px;
+  width: 100%;
+  max-width: 100%;
+  overflow-x: hidden;
 }
 
 .content-area {
-  padding: 0;
+  padding: 20px;
   margin-top: 0;
   min-height: calc(100vh - 80px);
   position: relative;
   z-index: 2;
   width: 100%;
+  max-width: 100%;
+  box-sizing: border-box;
 }
 
 /* Mobile Overlay */
@@ -200,13 +205,31 @@
 }
 
 /* Responsive Design */
+@media (max-width: 1200px) {
+  .sidebar {
+    width: 220px;
+  }
+  
+  .main-content {
+    margin-left: 220px;
+    width: calc(100% - 220px);
+  }
+}
+
 @media (max-width: 768px) {
   .sidebar {
     width: 280px;
+    transform: translateX(-100%);
+  }
+  
+  .sidebar.open {
+    transform: translateX(0);
   }
   
   .main-content {
     margin-left: 0;
+    width: 100%;
+    padding-top: 60px;
   }
 
   .submenu {
@@ -220,6 +243,10 @@
   
   .submenu-icon {
     font-size: 0.75rem;
+  }
+  
+  .content-area {
+    padding: 15px;
   }
 }
 
@@ -235,6 +262,29 @@
   
   .app-title {
     font-size: 1.125rem;
+  }
+  
+  .content-area {
+    padding: 10px;
+  }
+  
+  .main-content {
+    padding-top: 50px;
+  }
+}
+
+@media (max-width: 360px) {
+  .sidebar {
+    width: 240px;
+  }
+  
+  .content-area {
+    padding: 8px;
+  }
+  
+  .nav-button {
+    padding: 8px 12px;
+    font-size: 0.75rem;
   }
 } 
 

@@ -439,6 +439,7 @@
   height: auto;
   max-width: 100%;
   width: 100%;
+  overflow-x: auto;
 }
 
 .modern-table-wrapper {
@@ -451,6 +452,7 @@
   width: 100%;
   max-width: 100%;
   overflow-x: auto;
+  min-width: 800px; /* Ensure minimum width for table content */
 }
 
 .modern-table {
@@ -1575,4 +1577,102 @@
 .modern-action-btn-success:hover {
   background: #059669 !important;
   box-shadow: 0 4px 12px rgba(16, 185, 129, 0.4) !important;
+}
+
+/* Responsive Design for Different Screen Sizes */
+@media (max-width: 1200px) {
+  .modern-table-container {
+    padding: 15px;
+  }
+  
+  .modern-table-wrapper {
+    min-width: 700px;
+  }
+}
+
+@media (max-width: 768px) {
+  .article-parcel-container {
+    padding: 15px 0 0 0;
+    margin-top: 55px;
+  }
+  
+  .modern-table-container {
+    padding: 10px;
+  }
+  
+  .modern-table-wrapper {
+    min-width: 600px;
+    border-radius: 8px;
+  }
+  
+  .modern-table th,
+  .modern-table td {
+    padding: 8px 6px;
+    font-size: 0.75rem;
+  }
+  
+  .modern-table th {
+    font-size: 0.7rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .article-parcel-container {
+    padding: 10px 0 0 0;
+    margin-top: 50px;
+  }
+  
+  .modern-table-container {
+    padding: 8px;
+  }
+  
+  .modern-table-wrapper {
+    min-width: 500px;
+    border-radius: 6px;
+  }
+  
+  .modern-table th,
+  .modern-table td {
+    padding: 6px 4px;
+    font-size: 0.7rem;
+  }
+  
+  .modern-table th {
+    font-size: 0.65rem;
+  }
+  
+  .modern-action-btn {
+    width: 24px;
+    height: 24px;
+  }
+  
+  .modern-action-btn svg {
+    width: 14px;
+    height: 14px;
+  }
+}
+
+@media (max-width: 360px) {
+  .article-parcel-container {
+    padding: 8px 0 0 0;
+    margin-top: 45px;
+  }
+  
+  .modern-table-container {
+    padding: 6px;
+  }
+  
+  .modern-table-wrapper {
+    min-width: 450px;
+  }
+  
+  .modern-table th,
+  .modern-table td {
+    padding: 5px 3px;
+    font-size: 0.65rem;
+  }
+  
+  .modern-table th {
+    font-size: 0.6rem;
+  }
 }
