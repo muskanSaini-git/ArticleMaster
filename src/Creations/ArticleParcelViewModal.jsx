@@ -1762,8 +1762,8 @@ const ArticleParcelViewModal = ({
           }}>
             {/* Buttons row */}
             <div style={{ display: 'flex', gap: '0.25rem', margin: '0.25rem 0', alignItems: 'center', flexWrap: 'wrap' }}>
-              {/* Helpful text for Article Creation role */}
-              {userRole === 'article_creation' && !isEdit && (
+              {/* Helpful text for Article Creation and Admin roles */}
+              {(userRole === 'article_creation' || userRole === 'admin') && !isEdit && (
                 <div style={{
                   width: '100%',
                   marginBottom: '1rem',
@@ -1777,9 +1777,18 @@ const ArticleParcelViewModal = ({
                   <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
                     <div>
                       {userRole === 'admin' ? (
-                        <strong>👑 Admin Article Creation:</strong> Fill in the article details below. When you click "Insert Article", the article will be automatically <strong style={{color: '#10b981'}}>APPROVED</strong> with "Approved" status.
+                        <>
+                          <strong>👑 Admin Article Creation:</strong> Fill in the article details below. 
+                          When you click "Insert Article", the article will be automatically{' '}
+                          <span style={{color: '#10b981', fontWeight: 'bold'}}>APPROVED</span> 
+                          with "Approved" status.
+                        </>
                       ) : (
-                        <strong>📝 Article Creation Form:</strong> Fill in the article details below. When you click "Insert Article", the article will be saved to the database with "Pending" status and sent for approval.
+                        <>
+                          <strong>📝 Article Creation Form:</strong> Fill in the article details below. 
+                          When you click "Insert Article", the article will be saved to the database 
+                          with "Pending" status and sent for approval.
+                        </>
                       )}
                     </div>
                     <button 
