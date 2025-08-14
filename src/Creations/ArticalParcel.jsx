@@ -2449,7 +2449,7 @@ const ArticleParcel = ({ userRole, currentTab = 1 }) => {
                                           : [];
                                     
                                     // Debug logging removed
-                                    
+                                   
                                    if (!imagesArr || imagesArr.length === 0) {
                                      return (
                                        <div className="modern-image-placeholder">

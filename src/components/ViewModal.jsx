@@ -1,6 +1,5 @@
 import React from 'react';
 import { FaTimes, FaInfoCircle, FaEdit, FaTh, FaCheckCircle, FaClock, FaChevronUp, FaChevronDown } from 'react-icons/fa';
-import { FiEye } from 'react-icons/fi';
 
 const ViewModal = ({ 
   isOpen, 
@@ -8,8 +7,7 @@ const ViewModal = ({
   selectedItem, 
   sectionVisibility, 
   toggleSection, 
-  statusBadge, 
-  handleImageError 
+  statusBadge
 }) => {
   if (!isOpen || !selectedItem) return null;
 
@@ -18,65 +16,75 @@ const ViewModal = ({
       <div
         className="modal-content headerless-modal"
         style={{
-          maxWidth: '500px',
-          width: '90%',
-          maxHeight: '70vh',
+          maxWidth: '800px',
+          width: '95%',
+          maxHeight: '85vh',
           height: 'auto',
           overflowY: 'auto',
-          background: 'rgba(255, 255, 255, 0.95)',
+          background: 'rgba(255, 255, 255, 0.98)',
           backdropFilter: 'blur(20px)',
           borderRadius: '16px',
           boxShadow: '0 25px 50px rgba(0, 0, 0, 0.15)',
           border: '1px solid rgba(255, 255, 255, 0.2)',
-          margin: '40px 16px 40px 16px',
+          margin: '20px auto',
           display: 'block',
           scrollbarWidth: 'thin',
           scrollbarColor: '#cbd5e1 #f1f5f9',
-          WebkitScrollbar: {
-            width: '8px'
-          },
-          WebkitScrollbarTrack: {
-            background: '#f1f5f9',
-            borderRadius: '4px'
-          },
-          WebkitScrollbarThumb: {
-            background: '#cbd5e1',
-            borderRadius: '4px'
-          },
-          WebkitScrollbarThumbHover: {
-            background: '#94a3b8'
-          }
+          position: 'relative'
         }}
         onClick={(e) => e.stopPropagation()}
       >
-        <button className="floating-close-btn" onClick={onClose}>
+        <button className="floating-close-btn" onClick={onClose} style={{
+          position: 'absolute',
+          top: '15px',
+          right: '15px',
+          background: '#ef4444',
+          color: 'white',
+          border: 'none',
+          borderRadius: '50%',
+          width: '32px',
+          height: '32px',
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+          cursor: 'pointer',
+          zIndex: 1000,
+          fontSize: '14px'
+        }}>
           <FaTimes />
         </button>
+        
         <div className="modal-body headerless-body" style={{ 
-          padding: '15px', 
+          padding: '25px', 
           background: 'transparent', 
           borderRadius: '0', 
           margin: '0',
-          minHeight: '500px'
+          minHeight: '400px',
+          maxHeight: 'calc(85vh - 50px)',
+          overflowY: 'auto'
         }}>
           <div className="comprehensive-details-container" style={{ 
             height: '100%'
           }}>
-            <div style={{ textAlign: 'center', marginBottom: '20px' }}>
+            <div style={{ textAlign: 'center', marginBottom: '25px' }}>
               <h2 style={{ 
                 color: '#000000', 
-                fontSize: '1.3rem', 
+                fontSize: '1.5rem', 
                 fontWeight: '700',
-                marginBottom: '6px'
+                marginBottom: '8px'
               }}>
-                Product Details
+                Article Parcel Details
               </h2>
               <div style={{ 
-                color: '#000000', 
-                fontSize: '0.85rem',
-                fontWeight: '500'
+                color: '#374151', 
+                fontSize: '1rem',
+                fontWeight: '500',
+                padding: '8px 16px',
+                background: '#f3f4f6',
+                borderRadius: '8px',
+                display: 'inline-block'
               }}>
-                {selectedItem.MC_CD || selectedItem.MC_CODE}
+                {selectedItem.MC_CD || selectedItem.MC_CODE || 'N/A'}
               </div>
             </div>
 
@@ -87,58 +95,63 @@ const ViewModal = ({
                 display: 'flex',
                 alignItems: 'center',
                 cursor: 'pointer',
-                marginBottom: '15px',
+                marginBottom: '20px',
                 fontWeight: '600',
-                fontSize: '1.2rem',
+                fontSize: '1.1rem',
                 color: '#000000',
-                padding: '15px 20px',
-                background: 'rgba(249, 250, 251, 0.8)',
+                padding: '18px 20px',
+                background: 'rgba(249, 250, 251, 0.9)',
                 borderRadius: '12px',
                 border: '1px solid rgba(0, 0, 0, 0.1)',
-                transition: 'all 0.3s ease'
+                transition: 'all 0.3s ease',
+                boxShadow: '0 2px 4px rgba(0, 0, 0, 0.05)'
               }}
               onClick={() => toggleSection('basic')}
             >
-              <FaInfoCircle style={{marginRight: 12, color: '#000000', fontSize: '1.1rem'}} /> 
+              <FaInfoCircle style={{marginRight: 12, color: '#3b82f6', fontSize: '1.1rem'}} /> 
               Basic Information
               {sectionVisibility.basic ? 
-                <FaChevronUp style={{marginLeft: 'auto', color: '#000000'}} /> :
-                <FaChevronDown style={{marginLeft: 'auto', color: '#000000'}} />
+                <FaChevronUp style={{marginLeft: 'auto', color: '#6b7280'}} /> :
+                <FaChevronDown style={{marginLeft: 'auto', color: '#6b7280'}} />
               }
             </div>
             {sectionVisibility.basic && (
               <div style={{
                 display: 'grid',
-                gridTemplateColumns: 'repeat(auto-fit, minmax(350px, 1fr))',
-                gap: '20px',
-                marginBottom: '30px',
+                gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))',
+                gap: '16px',
+                marginBottom: '25px',
                 padding: '20px',
-                background: 'rgba(255, 255, 255, 0.8)',
+                background: 'rgba(255, 255, 255, 0.9)',
                 borderRadius: '12px',
-                border: '1px solid rgba(102, 126, 234, 0.1)'
+                border: '1px solid rgba(102, 126, 234, 0.15)',
+                boxShadow: '0 4px 12px rgba(0, 0, 0, 0.08)'
               }}>
                 {[
-                  { label: 'MC Code', value: selectedItem.MC_CODE },
-                  { label: 'Segment', value: selectedItem.SEG },
-                  { label: 'Division', value: selectedItem.DIV },
-                  { label: 'Major Category', value: selectedItem.MAJ_CAT_NM },
-                  { label: 'Description', value: selectedItem.ARTICLE_DESCRIPTION },
-                  { label: 'Status', value: statusBadge(selectedItem.STATUS) },
-                  { label: 'Submit Date', value: selectedItem.SUBMIT_DATE },
-                  { label: 'Submit By', value: selectedItem.SUBMIT_BY },
-                  { label: 'Approved By', value: selectedItem.APPROVED_BY || 'Not yet approved' }
+                  { label: 'Vendor Code', value: selectedItem.VND_CD || 'N/A' },
+                  { label: 'Article Description', value: selectedItem.ARTICLE_DESCRIPTION || 'N/A' },
+                  { label: 'MC Code', value: selectedItem.MC_CD || selectedItem.MC_CODE || 'N/A' },
+                  { label: 'Article Creation Date', value: selectedItem.ART_CR_DATE || 'N/A' },
+                  { label: 'Fabric Segment', value: selectedItem.FG_SEG || 'N/A' },
+                  { label: 'Fabric Division', value: selectedItem.FG_DIV || 'N/A' },
+                  { label: 'Major Category', value: selectedItem.MJ_CAT || 'N/A' },
+                  { label: 'Sub Division', value: selectedItem.SUB_DIV || 'N/A' },
+                  { label: 'Material Code Style', value: selectedItem.MC_ST || 'N/A' },
+                  { label: 'General Article', value: selectedItem.GEN_ART || 'N/A' },
+                  { label: 'HSN Code', value: selectedItem.HSN_CODE || 'N/A' }
                 ].map((item, index) => (
                   <div key={index} style={{
-                    padding: '15px',
-                    background: 'rgba(255, 255, 255, 0.8)',
+                    padding: '16px',
+                    background: 'rgba(255, 255, 255, 0.95)',
                     borderRadius: '10px',
-                    border: '1px solid rgba(0, 0, 0, 0.1)',
-                    boxShadow: '0 2px 8px rgba(0, 0, 0, 0.05)'
+                    border: '1px solid rgba(0, 0, 0, 0.08)',
+                    boxShadow: '0 2px 8px rgba(0, 0, 0, 0.05)',
+                    transition: 'all 0.2s ease'
                   }}>
-                    <div style={{ fontWeight: '600', color: '#374151', marginBottom: '5px', fontSize: '0.9rem' }}>
+                    <div style={{ fontWeight: '600', color: '#374151', marginBottom: '8px', fontSize: '0.9rem' }}>
                       {item.label}
                     </div>
-                    <div style={{ color: '#1f2937', fontWeight: '500' }}>
+                    <div style={{ color: '#1f2937', fontWeight: '500', fontSize: '0.95rem', wordBreak: 'break-word' }}>
                       {item.value}
                     </div>
                   </div>
@@ -146,77 +159,71 @@ const ViewModal = ({
               </div>
             )}
 
-            {/* Garment Construction Section */}
+            {/* Additional Details Section */}
             <div
               className="section-title"
               style={{
                 display: 'flex',
                 alignItems: 'center',
                 cursor: 'pointer',
-                marginBottom: '15px',
+                marginBottom: '20px',
                 fontWeight: '600',
-                fontSize: '1.2rem',
+                fontSize: '1.1rem',
                 color: '#000000',
-                padding: '15px 20px',
-                background: 'rgba(249, 250, 251, 0.8)',
+                padding: '18px 20px',
+                background: 'rgba(249, 250, 251, 0.9)',
                 borderRadius: '12px',
                 border: '1px solid rgba(0, 0, 0, 0.1)',
-                transition: 'all 0.3s ease'
+                transition: 'all 0.3s ease',
+                boxShadow: '0 2px 4px rgba(0, 0, 0, 0.05)'
               }}
-              onClick={() => toggleSection('garment')}
+              onClick={() => toggleSection('additional')}
             >
-              <FaEdit style={{marginRight: 12, color: '#000000', fontSize: '1.1rem'}} /> 
-              Garment Construction
-              {sectionVisibility.garment ? 
-                <FaChevronUp style={{marginLeft: 'auto', color: '#000000'}} /> :
-                <FaChevronDown style={{marginLeft: 'auto', color: '#000000'}} />
+              <FaEdit style={{marginRight: 12, color: '#10b981', fontSize: '1.1rem'}} /> 
+              Additional Details
+              {sectionVisibility.additional ? 
+                <FaChevronUp style={{marginLeft: 'auto', color: '#6b7280'}} /> :
+                <FaChevronDown style={{marginLeft: 'auto', color: '#6b7280'}} />
               }
             </div>
-            {sectionVisibility.garment && (
+            {sectionVisibility.additional && (
               <div style={{
                 display: 'grid',
-                gridTemplateColumns: 'repeat(auto-fit, minmax(350px, 1fr))',
-                gap: '20px',
-                marginBottom: '30px',
+                gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))',
+                gap: '16px',
+                marginBottom: '25px',
                 padding: '20px',
-                background: 'rgba(255, 255, 255, 0.8)',
+                background: 'rgba(255, 255, 255, 0.9)',
                 borderRadius: '12px',
-                border: '1px solid rgba(16, 185, 129, 0.1)'
+                border: '1px solid rgba(16, 185, 129, 0.15)',
+                boxShadow: '0 4px 12px rgba(0, 0, 0, 0.08)'
               }}>
                 {[
-                  { label: 'LCR/NON LCR', value: selectedItem.LCR_NON_LCR },
-                  { label: 'NECK', value: selectedItem.NECK },
-                  { label: 'NECK TYPE', value: selectedItem.NECK_TYPE },
-                  { label: 'NECK SIZE', value: selectedItem.NECK_SIZE },
-                  { label: 'PLACKET', value: selectedItem.PLACKET },
-                  { label: 'FATHER BELT', value: selectedItem.FATHER_BELT },
-                  { label: 'BELT DESIGN', value: selectedItem.BELT_DESIGN },
-                  { label: 'BLT SIZE', value: selectedItem.BLT_SIZE },
-                  { label: 'SLEEVE', value: selectedItem.SLEEVE },
-                  { label: 'BTM FOLD', value: selectedItem.BTM_FOLD },
-                  { label: 'BOTTOM OPEN WIDTH (INC)', value: selectedItem.BOTTOM_OPEN_WIDTH_INC },
-                  { label: 'SET', value: selectedItem.SET },
-                  { label: 'FO STYLE', value: selectedItem.FO_STYLE },
-                  { label: 'POCKET TYPE', value: selectedItem.POCKET_TYPE },
-                  { label: 'NO OF POCKET', value: selectedItem.NO_OF_POCKET },
-                  { label: 'FIT', value: selectedItem.FIT },
-                  { label: 'PATTERN', value: selectedItem.PATTERN },
-                  { label: 'LENGTH', value: selectedItem.LENGTH },
-                  { label: 'MEASUREMENT LENGTH (INCH)', value: selectedItem.MEASUREMENT_LENGTH_INCH },
-                  { label: 'DRAWCORD', value: selectedItem.DRAWCORD },
-                  { label: 'DRAWCORD STYLE', value: selectedItem.DRAWCORD_STYLE }
+                  { label: 'Vendor Name', value: selectedItem.VND_NM || 'N/A' },
+                  { label: 'Vendor Dozen Number', value: selectedItem.VND_DZN_NO || 'N/A' },
+                  { label: 'Maximum Retail Price', value: selectedItem.MRP || 'N/A' },
+                  { label: 'Number of Articles', value: selectedItem.NOA || 'N/A' },
+                  { label: 'Range Segment', value: selectedItem.RNG_SEG || 'N/A' },
+                  { label: 'Main MVGR', value: selectedItem.MAIN_MVGR || 'N/A' },
+                  { label: 'Macro MVGR', value: selectedItem.MACRO_MVGR || 'N/A' },
+                  { label: 'Micro MVGR', value: selectedItem.MICRO_MVGR || 'N/A' },
+                  { label: 'Fabric Division', value: selectedItem.FAB_DIV || 'N/A' },
+                  { label: 'Weave Type', value: selectedItem.WEAVE || 'N/A' },
+                  { label: 'Weave Type 2', value: selectedItem.WEAVE_2 || 'N/A' },
+                  { label: 'Material Composition', value: selectedItem.COMPOSITION || 'N/A' }
                 ].map((item, index) => (
                   <div key={index} style={{
-                    padding: '15px',
-                    background: 'rgba(255, 255, 255, 0.8)',
+                    padding: '16px',
+                    background: 'rgba(255, 255, 255, 0.95)',
                     borderRadius: '10px',
-                    border: '1px solid rgba(0, 0, 0, 0.1)',
-                    boxShadow: '0 2px 8px rgba(0, 0, 0, 0.05)'
+                    border: '1px solid rgba(0, 0, 0, 0.08)',
+                    boxShadow: '0 2px 8px rgba(0, 0, 0, 0.05)',
+                    transition: 'all 0.2s ease'
                   }}>
-                    <div style={{ fontWeight: '600', color: '#374151', marginBottom: '5px', fontSize: '0.9rem' }}>
+                    <div style={{ fontWeight: '600', color: '#374151', marginBottom: '8px', fontSize: '0.9rem' }}>
                       {item.label}
                     </div>
-                    <div style={{ color: '#1f2937', fontWeight: '500' }}>
+                    <div style={{ color: '#1f2937', fontWeight: '500', fontSize: '0.95rem', wordBreak: 'break-word' }}>
                       {item.value}
                     </div>
                   </div>
@@ -224,254 +231,68 @@ const ViewModal = ({
               </div>
             )}
 
-            {/* Hardware & Trims Section */}
+            {/* Status Section */}
             <div
               className="section-title"
               style={{
                 display: 'flex',
                 alignItems: 'center',
                 cursor: 'pointer',
-                marginBottom: '15px',
+                marginBottom: '20px',
                 fontWeight: '600',
-                fontSize: '1.2rem',
+                fontSize: '1.1rem',
                 color: '#000000',
-                padding: '15px 20px',
-                background: 'rgba(249, 250, 251, 0.8)',
+                padding: '18px 20px',
+                background: 'rgba(249, 250, 251, 0.9)',
                 borderRadius: '12px',
                 border: '1px solid rgba(0, 0, 0, 0.1)',
-                transition: 'all 0.3s ease'
-              }}
-              onClick={() => toggleSection('hardware')}
-            >
-              <FaTh style={{marginRight: 12, color: '#000000', fontSize: '1.1rem'}} /> 
-              Hardware & Trims
-              {sectionVisibility.hardware ? 
-                <FaChevronUp style={{marginLeft: 'auto', color: '#000000'}} /> :
-                <FaChevronDown style={{marginLeft: 'auto', color: '#000000'}} />
-              }
-            </div>
-            {sectionVisibility.hardware && (
-              <div style={{
-                display: 'grid',
-                gridTemplateColumns: 'repeat(auto-fit, minmax(350px, 1fr))',
-                gap: '20px',
-                marginBottom: '30px',
-                padding: '20px',
-                background: 'rgba(255, 255, 255, 0.8)',
-                borderRadius: '12px',
-                border: '1px solid rgba(245, 158, 11, 0.1)'
-              }}>
-                {[
-                  { label: 'DRAWCORD LOOP', value: selectedItem.DRAWCORD_LOOP },
-                  { label: 'BUTTON', value: selectedItem.BUTTON },
-                  { label: 'BUTTON COLOR', value: selectedItem.BUTTON_COLOR },
-                  { label: 'ZIP', value: selectedItem.ZIP },
-                  { label: 'ZIP COL', value: selectedItem.ZIP_COL },
-                  { label: 'PRINT TYPE', value: selectedItem.PRINT_TYPE },
-                  { label: 'PRINT PLACEMENT', value: selectedItem.PRINT_PLACEMENT },
-                  { label: 'PRINT STYLE', value: selectedItem.PRINT_STYLE },
-                  { label: 'PATCHES', value: selectedItem.PATCHES },
-                  { label: 'PATCH TYPE', value: selectedItem.PATCH_TYPE },
-                  { label: 'EMBROIDERY', value: selectedItem.EMBROIDERY },
-                  { label: 'EMB TYPE', value: selectedItem.EMB_TYPE },
-                  { label: 'PLACEMENT', value: selectedItem.PLACEMENT },
-                  { label: 'ADD ACC1', value: selectedItem.ADD_ACC1 }
-                ].map((item, index) => (
-                  <div key={index} style={{
-                    padding: '15px',
-                    background: 'rgba(255, 255, 255, 0.8)',
-                    borderRadius: '10px',
-                    border: '1px solid rgba(0, 0, 0, 0.1)',
-                    boxShadow: '0 2px 8px rgba(0, 0, 0, 0.05)'
-                  }}>
-                    <div style={{ fontWeight: '600', color: '#374151', marginBottom: '5px', fontSize: '0.9rem' }}>
-                      {item.label}
-                    </div>
-                    <div style={{ color: '#1f2937', fontWeight: '500' }}>
-                      {item.value}
-                    </div>
-                  </div>
-                ))}
-              </div>
-            )}
-
-            {/* Final Details Section */}
-            <div
-              className="section-title"
-              style={{
-                display: 'flex',
-                alignItems: 'center',
-                cursor: 'pointer',
-                marginBottom: '15px',
-                fontWeight: '600',
-                fontSize: '1.2rem',
-                color: '#000000',
-                padding: '15px 20px',
-                background: 'rgba(249, 250, 251, 0.8)',
-                borderRadius: '12px',
-                border: '1px solid rgba(0, 0, 0, 0.1)',
-                transition: 'all 0.3s ease'
-              }}
-              onClick={() => toggleSection('final')}
-            >
-              <FaCheckCircle style={{marginRight: 12, color: '#000000', fontSize: '1.1rem'}} /> 
-              Final Details & Pricing
-              {sectionVisibility.final ? 
-                <FaChevronUp style={{marginLeft: 'auto', color: '#000000'}} /> :
-                <FaChevronDown style={{marginLeft: 'auto', color: '#000000'}} />
-              }
-            </div>
-            {sectionVisibility.final && (
-              <div style={{
-                display: 'grid',
-                gridTemplateColumns: 'repeat(auto-fit, minmax(350px, 1fr))',
-                gap: '20px',
-                marginBottom: '30px',
-                padding: '20px',
-                background: 'rgba(255, 255, 255, 0.8)',
-                borderRadius: '12px',
-                border: '1px solid rgba(16, 185, 129, 0.1)'
-              }}>
-                {[
-                  { label: 'WASH', value: selectedItem.WASH },
-                  { label: 'WASH COLOR', value: selectedItem.WASH_COLOR },
-                  { label: 'CLR', value: selectedItem.CLR },
-                  { label: 'SIZE', value: selectedItem.SIZE },
-                  { label: 'MRP', value: `₹${selectedItem.MRP}` },
-                  { label: 'SEG', value: selectedItem.SEG },
-                  { label: 'ARTICLE TYPE', value: selectedItem.ARTICLE_TYPE },
-                  { label: 'BUYING TYPE', value: selectedItem.BUYING_TYPE },
-                  { label: 'PD', value: selectedItem.PD }
-                ].map((item, index) => (
-                  <div key={index} style={{
-                    padding: '15px',
-                    background: 'rgba(255, 255, 255, 0.8)',
-                    borderRadius: '10px',
-                    border: '1px solid rgba(0, 0, 0, 0.1)',
-                    boxShadow: '0 2px 8px rgba(0, 0, 0, 0.05)'
-                  }}>
-                    <div style={{ fontWeight: '600', color: '#374151', marginBottom: '5px', fontSize: '0.9rem' }}>
-                      {item.label}
-                    </div>
-                    <div style={{ color: '#1f2937', fontWeight: '500' }}>
-                      {item.value}
-                    </div>
-                  </div>
-                ))}
-              </div>
-            )}
-
-            {/* Status & Submission Info Section */}
-            <div
-              className="section-title"
-              style={{
-                display: 'flex',
-                alignItems: 'center',
-                cursor: 'pointer',
-                marginBottom: '15px',
-                fontWeight: '600',
-                fontSize: '1.2rem',
-                color: '#000000',
-                padding: '15px 20px',
-                background: 'rgba(249, 250, 251, 0.8)',
-                borderRadius: '12px',
-                border: '1px solid rgba(0, 0, 0, 0.1)',
-                transition: 'all 0.3s ease'
+                transition: 'all 0.3s ease',
+                boxShadow: '0 2px 4px rgba(0, 0, 0, 0.05)'
               }}
               onClick={() => toggleSection('status')}
             >
-              <FaClock style={{marginRight: 12, color: '#000000', fontSize: '1.1rem'}} /> 
-              Status & Submission
+              <FaCheckCircle style={{marginRight: 12, color: '#059669', fontSize: '1.1rem'}} /> 
+              Status Information
               {sectionVisibility.status ? 
-                <FaChevronUp style={{marginLeft: 'auto', color: '#000000'}} /> :
-                <FaChevronDown style={{marginLeft: 'auto', color: '#000000'}} />
+                <FaChevronUp style={{marginLeft: 'auto', color: '#6b7280'}} /> :
+                <FaChevronDown style={{marginLeft: 'auto', color: '#6b7280'}} />
               }
             </div>
             {sectionVisibility.status && (
               <div style={{
                 display: 'grid',
-                gridTemplateColumns: 'repeat(auto-fit, minmax(350px, 1fr))',
-                gap: '20px',
-                marginBottom: '30px',
+                gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))',
+                gap: '16px',
+                marginBottom: '25px',
                 padding: '20px',
-                background: 'rgba(255, 255, 255, 0.8)',
+                background: 'rgba(255, 255, 255, 0.9)',
                 borderRadius: '12px',
-                border: '1px solid rgba(59, 130, 246, 0.1)'
+                border: '1px solid rgba(59, 130, 246, 0.15)',
+                boxShadow: '0 4px 12px rgba(0, 0, 0, 0.08)'
               }}>
                 {[
                   { label: 'Status', value: statusBadge(selectedItem.STATUS) },
-                  { label: 'Submit Date', value: selectedItem.SUBMIT_DATE },
-                  { label: 'Submitted By', value: selectedItem.SUBMIT_BY },
+                  { label: 'Created Date', value: selectedItem.ART_CR_DATE || 'N/A' },
+                  { label: 'Created By', value: selectedItem.CREATED_BY || 'N/A' },
                   { label: 'Approved By', value: selectedItem.APPROVED_BY || 'Not yet approved' }
                 ].map((item, index) => (
                   <div key={index} style={{
-                    padding: '15px',
-                    background: 'rgba(255, 255, 255, 0.8)',
+                    padding: '16px',
+                    background: 'rgba(255, 255, 255, 0.95)',
                     borderRadius: '10px',
-                    border: '1px solid rgba(0, 0, 0, 0.1)',
-                    boxShadow: '0 2px 8px rgba(0, 0, 0, 0.05)'
+                    border: '1px solid rgba(0, 0, 0, 0.08)',
+                    boxShadow: '0 2px 8px rgba(0, 0, 0, 0.05)',
+                    transition: 'all 0.2s ease'
                   }}>
-                    <div style={{ fontWeight: '600', color: '#374151', marginBottom: '5px', fontSize: '0.9rem' }}>
+                    <div style={{ fontWeight: '600', color: '#374151', marginBottom: '8px', fontSize: '0.9rem' }}>
                       {item.label}
                     </div>
-                    <div style={{ color: '#1f2937', fontWeight: '500' }}>
+                    <div style={{ color: '#1f2937', fontWeight: '500', fontSize: '0.95rem', wordBreak: 'break-word' }}>
                       {item.value}
                     </div>
                   </div>
                 ))}
               </div>
-            )}
-
-            {/* Images Section */}
-            {selectedItem.Images && selectedItem.Images.length > 0 && (
-              <>
-                <div
-                  className="section-title"
-                  style={{
-                    display: 'flex',
-                    alignItems: 'center',
-                    cursor: 'pointer',
-                    marginBottom: '15px',
-                    fontWeight: '600',
-                    fontSize: '1.2rem',
-                    color: '#000000',
-                    padding: '15px 20px',
-                    background: 'rgba(249, 250, 251, 0.8)',
-                    borderRadius: '12px',
-                    border: '1px solid rgba(0, 0, 0, 0.1)',
-                    transition: 'all 0.3s ease'
-                  }}
-                  onClick={() => toggleSection('images')}
-                >
-                  <FiEye style={{marginRight: 12, color: '#000000', fontSize: '1.1rem'}} /> 
-                  Product Images
-                  {sectionVisibility.images ? 
-                    <FaChevronUp style={{marginLeft: 'auto', color: '#000000'}} /> :
-                    <FaChevronDown style={{marginLeft: 'auto', color: '#000000'}} />
-                  }
-                </div>
-                {sectionVisibility.images && (
-                  <div style={{ 
-                    padding: '10px', 
-                    background: '#f8fafc', 
-                    borderRadius: '8px', 
-                    border: '1px solid #e2e8f0', 
-                    marginBottom: '30px' 
-                  }}>
-                    <div className="modal-image-gallery">
-                      {selectedItem.Images.map((img, idx) => (
-                        <img 
-                          key={idx} 
-                          src={img} 
-                          alt={`${selectedItem.MC_CODE} ${idx + 1}`} 
-                          className="modal-image" 
-                          onError={(e) => handleImageError && handleImageError(img, e)} 
-                        />
-                      ))}
-                    </div>
-                  </div>
-                )}
-              </>
             )}
           </div>
         </div>
