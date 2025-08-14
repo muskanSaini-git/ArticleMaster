@@ -490,8 +490,8 @@
   background: #f8fafc;
   color: #374151 !important;
   font-weight: 600;
-  font-size: 0.9rem;
-  padding: 14px 12px;
+  font-size: 0.75rem;
+  padding: 10px 8px;
   text-align: center;
   border: none;
   position: sticky;
@@ -534,13 +534,13 @@
 }
 
 .modern-table td {
-  padding: 12px 10px;
+  padding: 8px 6px;
   text-align: center;
   border: none;
   border-bottom: 1px solid #f1f5f9;
   background: #ffffff;
   transition: all 0.2s ease;
-  font-size: 0.85rem;
+  font-size: 0.7rem;
   color: #374151;
   font-weight: 400;
   position: relative;
@@ -1485,8 +1485,8 @@
 }
 
 .modern-action-btn {
-  width: 32px;
-  height: 32px;
+  width: 28px;
+  height: 28px;
   border: none;
   border-radius: 6px;
   display: flex;
@@ -1502,8 +1502,8 @@
 }
 
 .modern-action-btn svg {
-  width: 18px;
-  height: 18px;
+  width: 16px;
+  height: 16px;
   color: white !important;
   fill: white !important;
   stroke: white !important;
@@ -1607,22 +1607,22 @@
   
   .modern-table th,
   .modern-table td {
-    padding: 10px 8px;
-    font-size: 0.8rem;
+    padding: 8px 6px;
+    font-size: 0.65rem;
   }
   
   .modern-table th {
-    font-size: 0.85rem;
+    font-size: 0.7rem;
   }
   
   .modern-action-btn {
-    width: 30px;
-    height: 30px;
+    width: 26px;
+    height: 26px;
   }
   
   .modern-action-btn svg {
-    width: 16px;
-    height: 16px;
+    width: 14px;
+    height: 14px;
   }
 }
 
@@ -1643,22 +1643,22 @@
   
   .modern-table th,
   .modern-table td {
-    padding: 8px 6px;
-    font-size: 0.75rem;
+    padding: 6px 4px;
+    font-size: 0.6rem;
   }
   
   .modern-table th {
-    font-size: 0.8rem;
+    font-size: 0.65rem;
   }
   
   .modern-action-btn {
-    width: 28px;
-    height: 28px;
+    width: 24px;
+    height: 24px;
   }
   
   .modern-action-btn svg {
-    width: 15px;
-    height: 15px;
+    width: 13px;
+    height: 13px;
   }
 }
 
@@ -1678,21 +1678,21 @@
   
   .modern-table th,
   .modern-table td {
-    padding: 6px 4px;
-    font-size: 0.7rem;
+    padding: 5px 3px;
+    font-size: 0.55rem;
   }
   
   .modern-table th {
-    font-size: 0.75rem;
+    font-size: 0.6rem;
   }
   
   .modern-action-btn {
-    width: 26px;
-    height: 26px;
+    width: 22px;
+    height: 22px;
   }
   
   .modern-action-btn svg {
-    width: 14px;
-    height: 14px;
+    width: 12px;
+    height: 12px;
   }
 }
