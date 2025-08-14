@@ -40,6 +40,109 @@ const columnNames = [
   "ART_CR_DATE", "FG_SEG", "FG_DIV", "SUB_DIV", "MJ_CAT", "MC_DESC", "MC_ST", "MC_CD", "GEN_ART", "MC_DESC", "MC_DESC", "HSN_CODE", "VND_CD", "VND_NM", "VND_DZN_NO", "MRP", "NOA", "RNG_SEG", "MAIN_MVGR", "MACRO_MVGR", "MICRO_MVGR", "FAB_DIV", "WEAVE", "WEAVE_2", "COMPOSITION", "FINISH", "CONSTRUCTION", "GSM", "WIDTH", "WIDTH_UOM", "COUNT", "WEIGHT_TYPE", "ORIGINAL_MATERIAL_SOURCE", "SHADE", "LCR_NON_LCR", "NECK", "NECK_TYPE", "NECK_SIZE", "PLACKET", "FATHER_BELT", "BELT_DESIGN", "BLT_SIZE", "SLEEVE", "SLEEVES_MAIN_STYLE", "BTFOLD", "BOTTOM_OPEN_WIDTH_INC", "SET", "FO_STYLE", "POCKET_TYPE", "NO_OF_POCKET", "FIT", "PATTERN", "LENGTH", "MEASUREMENT_LENGTH_INCH", "DRAWCORD", "DRAWCORD_STYLE", "DRAWCORD_LOOP", "BUTTON", "BUTTON_COLOR", "ZIP", "ZIP_COL", "PRINT_TYPE", "PRINT_PLACEMENT", "PRINT_STYLE", "PATCHES", "PATCH_TYPE", "EMBROIDERY", "EMB_TYPE", "PLACEMENT", "ADD_ACC1", "WASH", "WASH_COLOR", "CLR", "SIZE", "SEG", "ARTICLE_TYPE", "BUYING_TYPE", "PD", "OUNZ", "FAB_WEAVE", "FAB2", "FAB_WEAVE_2", "FAB_STYLE", "FAB_SUB_STYLE", "LYCRA", "COLLAR", "NECK_BAND_STYLE", "COLLAR_SIZE", "PLACKET_CHANGING", "BLT_MAIN_STYLE", "SUB_STYLE_BLT", "NECK_BAND", "FO_BTN_STYLE", "POCKET", "MAIN_STYLE", "DC_SUB_STYLE", "DC_EDGE_LOOP", "BTN_MAIN_MVGR", "SUB_STYLE_BTN_CLR", "ADD_ACC", "ACC_COL", "BRAND_VENDOR", "MDM_REMARKS", "DATE", "COLOR1", "SEASON", "SOURCE", "FILE_PATH", "Images"
 ];
 
+// Function to convert field names to readable headers
+const getReadableHeader = (fieldName) => {
+  const headerMap = {
+    'ART_CR_DATE': 'Article Creation Date',
+    'FG_SEG': 'Fabric Segment',
+    'FG_DIV': 'Fabric Division',
+    'SUB_DIV': 'Sub Division',
+    'MJ_CAT': 'Major Category',
+    'MC_DESC': 'Material Code Description',
+    'MC_ST': 'Material Code Style',
+    'MC_CD': 'Material Code',
+    'GEN_ART': 'General Article',
+    'HSN_CODE': 'HSN Code',
+    'VND_CD': 'Vendor Code',
+    'VND_NM': 'Vendor Name',
+    'VND_DZN_NO': 'Vendor Dozen Number',
+    'MRP': 'Maximum Retail Price',
+    'NOA': 'Number of Articles',
+    'RNG_SEG': 'Range Segment',
+    'MAIN_MVGR': 'Main MVGR',
+    'MACRO_MVGR': 'Macro MVGR',
+    'MICRO_MVGR': 'Micro MVGR',
+    'FAB_DIV': 'Fabric Division',
+    'WEAVE': 'Weave Type',
+    'WEAVE_2': 'Weave Type 2',
+    'COMPOSITION': 'Material Composition',
+    'FINISH': 'Fabric Finish',
+    'CONSTRUCTION': 'Fabric Construction',
+    'YARN_01': 'Yarn Type 1',
+    'YARN_02': 'Yarn Type 2',
+    'GSM': 'Grams per Square Meter',
+    'WIDTH': 'Fabric Width',
+    'WIDTH_UOM': 'Width Unit of Measure',
+    'COUNT': 'Yarn Count',
+    'WEIGHT_TYPE': 'Weight Type',
+    'ORIGINAL_MATERIAL_SOURCE': 'Original Material Source',
+    'SHADE': 'Color Shade',
+    'LCR_NON_LCR': 'LCR Non LCR',
+    'NECK': 'Neck Style',
+    'NECK_TYPE': 'Neck Type',
+    'NECK_SIZE': 'Neck Size',
+    'PLACKET': 'Placket Style',
+    'FATHER_BELT': 'Father Belt',
+    'BELT_DESIGN': 'Belt Design',
+    'BLT_SIZE': 'Belt Size',
+    'SLEEVE': 'Sleeve Style',
+    'SLEEVES_MAIN_STYLE': 'Sleeves Main Style',
+    'BTFOLD': 'Bottom Fold',
+    'BOTTOM_OPEN_WIDTH_INC': 'Bottom Open Width Increase',
+    'SET': 'Set Type',
+    'FO_STYLE': 'Front Opening Style',
+    'POCKET_TYPE': 'Pocket Type',
+    'NO_OF_POCKET': 'Number of Pockets',
+    'FIT': 'Fit Type',
+    'PATTERN': 'Pattern Style',
+    'LENGTH': 'Length',
+    'MEASUREMENT_LENGTH_INCH': 'Measurement Length in Inches',
+    'DRAWCORD': 'Drawcord',
+    'DRAWCORD_STYLE': 'Drawcord Style',
+    'DRAWCORD_LOOP': 'Drawcord Loop',
+    'BUTTON': 'Button Style',
+    'BUTTON_COLOR': 'Button Color',
+    'ZIP': 'Zipper Style',
+    'ZIP_COL': 'Zipper Color',
+    'PRINT_TYPE': 'Print Type',
+    'PRINT_PLACEMENT': 'Print Placement',
+    'PRINT_STYLE': 'Print Style',
+    'PATCHES': 'Patches',
+    'PATCH_TYPE': 'Patch Type',
+    'EMBROIDERY': 'Embroidery',
+    'EMB_TYPE': 'Embroidery Type',
+    'PLACEMENT': 'Placement',
+    'ADD_ACC1': 'Additional Accessory 1',
+    'WASH': 'Wash Type',
+    'WASH_COLOR': 'Wash Color',
+    'CLR': 'Color',
+    'SIZE': 'Size',
+    'SEG': 'Segment',
+    'ARTICLE_TYPE': 'Article Type',
+    'BUYING_TYPE': 'Buying Type',
+    'PD': 'Product Description',
+    'OUNZ': 'Ounces',
+    'FAB_WEAVE': 'Fabric Weave',
+    'FAB2': 'Fabric 2',
+    'FAB_WEAVE_2': 'Fabric Weave 2',
+    'FAB_STYLE': 'Fabric Style',
+    'FAB_SUB_STYLE': 'Fabric Sub Style',
+    'LYCRA': 'Lycra Content',
+    'COLLAR': 'Collar Style',
+    'NECK_BAND_STYLE': 'Neck Band Style',
+    'COLLAR_SIZE': 'Collar Size',
+    'PLACKET_CHANGING': 'Placket Changing',
+    'BLT_MAIN_STYLE': 'Belt Main Style',
+    'SUB_STYLE_BLT': 'Sub Style Belt',
+    'NECK_BAND': 'Neck Band',
+    'FO_BTN_STYLE': 'Front Opening Button Style',
+    'POCKET': 'Pocket',
+    'MAIN_STYLE': 'Main Style'
+  };
+  
+  return headerMap[fieldName] || fieldName.replace(/_/g, ' ').replace(/\b\w/g, l => l.toUpperCase());
+};
+
 // Column definitions with data types - Updated to match backend payload field names exactly
 const columnDefinitions = [
   { name: "ART_CR_DATE", type: "date" },
@@ -429,7 +532,7 @@ const ArticleParcel = ({ userRole, currentTab = 1 }) => {
         setApprovalMessage("✅ Article sent for approval successfully!");
         
         // Update the article status to 'Sent for Approval'
-        setArticleRows(prevRows => prevRows.map(row =>
+      setArticleRows(prevRows => prevRows.map(row =>
           row.ArticleId === articleId ? { ...row, STATUS: 'Sent for Approval' } : row
         ));
         
@@ -528,39 +631,39 @@ const ArticleParcel = ({ userRole, currentTab = 1 }) => {
     } else {
       // Admin role filtering (existing logic)
       switch (currentTabState) {
-        case 1: // All active articles
-          filtered = articleRows;
-          break;
-        case 2: // Pending
-          filtered = articleRows.filter(article => 
-            article.STATUS && article.STATUS.toLowerCase().includes('pending')
-          );
-          break;
-        case 3: // Approved
-          filtered = articleRows.filter(article => 
-            article.STATUS && article.STATUS.toLowerCase().includes('approved')
-          );
-          break;
-        case 4: // Rejected
-          filtered = articleRows.filter(article => 
-            article.STATUS && article.STATUS.toLowerCase().includes('rejected')
-          );
-          break;
-        case 5: // Draft articles
-          filtered = articleRows.filter(article => 
-            article.STATUS && article.STATUS.toLowerCase().includes('draft')
-          );
-          break;
-        case 6: // Sent articles
-          filtered = articleRows.filter(article => 
+      case 1: // All active articles
+        filtered = articleRows;
+        break;
+      case 2: // Pending
+        filtered = articleRows.filter(article => 
+          article.STATUS && article.STATUS.toLowerCase().includes('pending')
+        );
+        break;
+      case 3: // Approved
+        filtered = articleRows.filter(article => 
+          article.STATUS && article.STATUS.toLowerCase().includes('approved')
+        );
+        break;
+      case 4: // Rejected
+        filtered = articleRows.filter(article => 
+          article.STATUS && article.STATUS.toLowerCase().includes('rejected')
+        );
+        break;
+      case 5: // Draft articles
+        filtered = articleRows.filter(article => 
+          article.STATUS && article.STATUS.toLowerCase().includes('draft')
+        );
+        break;
+      case 6: // Sent articles
+        filtered = articleRows.filter(article => 
             article.STATUS && (article.STATUS.toLowerCase().includes('sent for approval') || article.STATUS.toLowerCase().includes('sent'))
-          );
-          break;
-        case 7: // Deleted articles
-          filtered = deletedArticles;
-          break;
-        default:
-          filtered = articleRows;
+        );
+        break;
+      case 7: // Deleted articles
+        filtered = deletedArticles;
+        break;
+      default:
+        filtered = articleRows;
       }
     }
     
@@ -607,25 +710,25 @@ const ArticleParcel = ({ userRole, currentTab = 1 }) => {
       return { articles, pending, approved, rejected };
     } else {
       // Admin role counts (existing logic)
-      const all = articleRows.length;
-      const pending = articleRows.filter(article => 
-        article.STATUS && article.STATUS.toLowerCase().includes('pending')
-      ).length;
-      const approved = articleRows.filter(article => 
-        article.STATUS && article.STATUS.toLowerCase().includes('approved')
-      ).length;
-      const rejected = articleRows.filter(article => 
-        article.STATUS && article.STATUS.toLowerCase().includes('rejected')
-      ).length;
-      const draft = articleRows.filter(article => 
-        article.STATUS && article.STATUS.toLowerCase().includes('draft')
-      ).length;
-      const sent = articleRows.filter(article => 
+    const all = articleRows.length;
+    const pending = articleRows.filter(article => 
+      article.STATUS && article.STATUS.toLowerCase().includes('pending')
+    ).length;
+    const approved = articleRows.filter(article => 
+      article.STATUS && article.STATUS.toLowerCase().includes('approved')
+    ).length;
+    const rejected = articleRows.filter(article => 
+      article.STATUS && article.STATUS.toLowerCase().includes('rejected')
+    ).length;
+    const draft = articleRows.filter(article => 
+      article.STATUS && article.STATUS.toLowerCase().includes('draft')
+    ).length;
+    const sent = articleRows.filter(article => 
         article.STATUS && (article.STATUS.toLowerCase().includes('sent for approval') || article.STATUS.toLowerCase().includes('sent'))
-      ).length;
-      const deleted = deletedArticles.length;
-      
-      return { all, pending, approved, rejected, draft, sent, deleted };
+    ).length;
+    const deleted = deletedArticles.length;
+    
+    return { all, pending, approved, rejected, draft, sent, deleted };
     }
   };
 
@@ -2184,7 +2287,7 @@ const ArticleParcel = ({ userRole, currentTab = 1 }) => {
             <FiPackage style={{ fontSize: '2.2rem', color: '#1e3a8a' }} />
             Article Parcel
           </h1>
-        </div>
+      </div>
 
         {/* Modern Toolbar */}
         <div className="modern-toolbar">
@@ -2275,7 +2378,7 @@ const ArticleParcel = ({ userRole, currentTab = 1 }) => {
                 {/* Main table columns */}
                 {(currentTabState === 7 ? deletedTableColumns : mainTableColumns).map((heading, index) => (
                   <th key={`${heading}-${index}`} className="fixed-column" style={{ whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
-                    {heading === 'deletedAt' ? 'Deleted Date' : heading}
+                    {heading === 'deletedAt' ? 'Deleted Date' : getReadableHeader(heading)}
                   </th>
                 ))}
                 <th className="fixed-column">Actions</th>
@@ -2657,7 +2760,7 @@ const ArticleParcel = ({ userRole, currentTab = 1 }) => {
                                 }}
                               >
                                 <FaTimesCircle />
-                              </button>
+                          </button>
                             </>
                           )}
                             </>
