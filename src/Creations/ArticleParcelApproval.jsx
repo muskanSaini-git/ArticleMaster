@@ -4,6 +4,7 @@ import { FiEye, FiTrash, FiEdit, FiPlay, FiSearch, FiDownload, FiUpload, FiPlus,
 import { useNavigate } from 'react-router-dom';
 import config from '../config';
 import ArticleParcelViewModal from './ArticleParcelViewModal.jsx';
+import ViewModal from '../components/ViewModal.jsx';
 import './ArticalParcel.css';
 
 // Column names and definitions (same as ArticleParcel.jsx)
@@ -136,6 +137,17 @@ const ArticleParcelApproval = () => {
   const [currentFilter, setCurrentFilter] = useState('pending');
   const [viewModalOpen, setViewModalOpen] = useState(false);
   const [selectedRow, setSelectedRow] = useState(null);
+  const [sectionVisibility, setSectionVisibility] = useState({
+    basic: true,
+    garment: false,
+    hardware: false,
+    final: false,
+    status: false,
+    images: false
+  });
+  const toggleSection = (section) => {
+    setSectionVisibility(prev => ({ ...prev, [section]: !prev[section] }));
+  };
   const [approvalModalOpen, setApprovalModalOpen] = useState(false);
   const [approvalRow, setApprovalRow] = useState(null);
   const [rejectionReason, setRejectionReason] = useState("");
@@ -823,16 +835,15 @@ const ArticleParcelApproval = () => {
         </div>
       </div>
 
-      {/* View Modal */}
-      {viewModalOpen && selectedRow && (
-        <ArticleParcelViewModal
-          open={viewModalOpen}
-          onClose={() => setViewModalOpen(false)}
-          rowData={selectedRow}
-          columnDefinitions={columnDefinitions}
-          readOnly={true}
-        />
-      )}
+      {/* Unified View Modal */}
+      <ViewModal
+        isOpen={viewModalOpen && !!selectedRow}
+        onClose={() => setViewModalOpen(false)}
+        selectedItem={selectedRow}
+        sectionVisibility={sectionVisibility}
+        toggleSection={toggleSection}
+        statusBadge={statusBadge}
+      />
 
       {/* Approval Modal */}
       {approvalModalOpen && approvalRow && (

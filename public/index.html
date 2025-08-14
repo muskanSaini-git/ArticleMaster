@@ -3,40 +3,36 @@
   <head>
     <meta charset="utf-8" />
     
-    <!-- Preload Favicon Files -->
-    <link rel="preload" href="%PUBLIC_URL%/favicon.ico" as="image" type="image/x-icon" />
-    <link rel="preload" href="%PUBLIC_URL%/16.png" as="image" type="image/png" />
-    <link rel="preload" href="%PUBLIC_URL%/32.png" as="image" type="image/png" />
-    <link rel="preload" href="%PUBLIC_URL%/48.png" as="image" type="image/png" />
+    <!-- Primary Favicon - Force browser to use our custom PNG -->
+    <link rel="icon" type="image/png" href="%PUBLIC_URL%/16.png?v=2" />
     
-    <!-- Favicon Configuration -->
-    <link rel="icon" type="image/x-icon" href="%PUBLIC_URL%/favicon.ico" />
-    <link rel="icon" type="image/png" sizes="16x16" href="%PUBLIC_URL%/16.png" />
-    <link rel="icon" type="image/png" sizes="32x32" href="%PUBLIC_URL%/32.png" />
-    <link rel="icon" type="image/png" sizes="48x48" href="%PUBLIC_URL%/48.png" />
-    <link rel="icon" type="image/png" sizes="96x96" href="%PUBLIC_URL%/196.png" />
-    <link rel="icon" type="image/png" sizes="192x192" href="%PUBLIC_URL%/196.png" />
-    <link rel="icon" type="image/png" sizes="512x512" href="%PUBLIC_URL%/logo512.png" />
+    <!-- Force favicon refresh with cache-busting - PNG only -->
+    <link rel="icon" type="image/png" sizes="16x16" href="%PUBLIC_URL%/16.png?v=2" />
+    <link rel="icon" type="image/png" sizes="32x32" href="%PUBLIC_URL%/32.png?v=2" />
+    <link rel="icon" type="image/png" sizes="48x48" href="%PUBLIC_URL%/48.png?v=2" />
+    <link rel="icon" type="image/png" sizes="96x96" href="%PUBLIC_URL%/196.png?v=2" />
+    <link rel="icon" type="image/png" sizes="192x192" href="%PUBLIC_URL%/196.png?v=2" />
+    <link rel="icon" type="image/png" sizes="512x512" href="%PUBLIC_URL%/196.png?v=2" />
     
     <!-- Apple Touch Icons -->
-    <link rel="apple-touch-icon" sizes="180x180" href="%PUBLIC_URL%/196.png" />
-    <link rel="apple-touch-icon" sizes="152x152" href="%PUBLIC_URL%/196.png" />
-    <link rel="apple-touch-icon" sizes="144x144" href="%PUBLIC_URL%/196.png" />
-    <link rel="apple-touch-icon" sizes="120x120" href="%PUBLIC_URL%/196.png" />
-    <link rel="apple-touch-icon" sizes="114x114" href="%PUBLIC_URL%/196.png" />
-    <link rel="apple-touch-icon" sizes="76x76" href="%PUBLIC_URL%/48.png" />
-    <link rel="apple-touch-icon" sizes="72x72" href="%PUBLIC_URL%/48.png" />
-    <link rel="apple-touch-icon" sizes="60x60" href="%PUBLIC_URL%/48.png" />
-    <link rel="apple-touch-icon" sizes="57x57" href="%PUBLIC_URL%/48.png" />
+    <link rel="apple-touch-icon" sizes="180x180" href="%PUBLIC_URL%/196.png?v=2" />
+    <link rel="apple-touch-icon" sizes="152x152" href="%PUBLIC_URL%/196.png?v=2" />
+    <link rel="apple-touch-icon" sizes="144x144" href="%PUBLIC_URL%/196.png?v=2" />
+    <link rel="apple-touch-icon" sizes="120x120" href="%PUBLIC_URL%/196.png?v=2" />
+    <link rel="apple-touch-icon" sizes="114x114" href="%PUBLIC_URL%/196.png?v=2" />
+    <link rel="apple-touch-icon" sizes="76x76" href="%PUBLIC_URL%/48.png?v=2" />
+    <link rel="apple-touch-icon" sizes="72x72" href="%PUBLIC_URL%/48.png?v=2" />
+    <link rel="apple-touch-icon" sizes="60x60" href="%PUBLIC_URL%/48.png?v=2" />
+    <link rel="apple-touch-icon" sizes="57x57" href="%PUBLIC_URL%/48.png?v=2" />
     
     <!-- Android Chrome Icons -->
-    <link rel="icon" type="image/png" sizes="192x192" href="%PUBLIC_URL%/196.png" />
-    <link rel="icon" type="image/png" sizes="512x512" href="%PUBLIC_URL%/logo512.png" />
+    <link rel="icon" type="image/png" sizes="192x192" href="%PUBLIC_URL%/196.png?v=2" />
+    <link rel="icon" type="image/png" sizes="512x512" href="%PUBLIC_URL%/196.png?v=2" />
     
     <!-- Microsoft Tiles -->
     <meta name="msapplication-TileColor" content="#3b82f6" />
-    <meta name="msapplication-TileImage" content="%PUBLIC_URL%/196.png" />
-    <meta name="msapplication-config" content="%PUBLIC_URL%/browserconfig.xml" />
+    <meta name="msapplication-TileImage" content="%PUBLIC_URL%/196.png?v=2" />
+    <meta name="msapplication-config" content="%PUBLIC_URL%/browserconfig.xml?v=2" />
     
     <!-- Theme Colors -->
     <meta name="theme-color" content="#3b82f6" />
@@ -49,12 +45,12 @@
       name="description"
       content="Article Master - Professional Article Management System"
     />
-    <link rel="apple-touch-icon" href="%PUBLIC_URL%/196.png" />
+    <link rel="apple-touch-icon" href="%PUBLIC_URL%/196.png?v=2" />
     <!--
       manifest.json provides metadata used when your web app is installed on a
       user's mobile device or desktop. See https://developers.google.com/web/fundamentals/web-app-manifest/
     -->
-    <link rel="manifest" href="%PUBLIC_URL%/manifest.json" />
+    <link rel="manifest" href="%PUBLIC_URL%/manifest.json?v=2" />
     <!--
       Notice the use of %PUBLIC_URL% in the tags above.
       It will be replaced with the URL of the `public` folder during the build.

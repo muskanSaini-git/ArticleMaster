@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { FaUser, FaBoxOpen, FaBarcode, FaCheck, FaTimes, FaEye, FaCheckCircle, FaTimesCircle, FaHourglassHalf, FaInfoCircle } from 'react-icons/fa';
 import { FiEye, FiTrash, FiEdit, FiSearch, FiDownload, FiUpload, FiPlus, FiPackage, FiClock, FiRefreshCw, FiList } from "react-icons/fi";
 import './Article.css';
+import ViewModal from './ViewModal';
 
 const Article = () => {
   const [searchQuery, setSearchQuery] = useState("");
@@ -11,6 +12,19 @@ const Article = () => {
   const [selectedRows, setSelectedRows] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
   const [approvalMessage, setApprovalMessage] = useState("");
+  const [viewModalOpen, setViewModalOpen] = useState(false);
+  const [selectedItem, setSelectedItem] = useState(null);
+  const [sectionVisibility, setSectionVisibility] = useState({
+    basic: true,
+    garment: false,
+    hardware: false,
+    final: false,
+    status: false,
+    images: false
+  });
+  const toggleSection = (section) => {
+    setSectionVisibility(prev => ({ ...prev, [section]: !prev[section] }));
+  };
 
   // Sample data generation
   const generateRow = (id, status) => {
@@ -322,7 +336,7 @@ const Article = () => {
                         <div className="action-buttons-row">
                           <button
                             className="action-btn action-btn-view"
-                            onClick={() => console.log('View:', row)}
+                            onClick={() => { setSelectedItem(row); setViewModalOpen(true); }}
                             title="View Details"
                           >
                             <FiEye />
@@ -380,6 +394,15 @@ const Article = () => {
           </button>
         </div>
       </div>
+      {/* Unified View Modal */}
+      <ViewModal
+        isOpen={viewModalOpen && !!selectedItem}
+        onClose={() => setViewModalOpen(false)}
+        selectedItem={selectedItem}
+        sectionVisibility={sectionVisibility}
+        toggleSection={toggleSection}
+        statusBadge={statusBadge}
+      />
     </div>
   );
 };

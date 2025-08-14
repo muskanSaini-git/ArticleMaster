@@ -3,6 +3,7 @@ import { FaCheckCircle, FaTimesCircle, FaEye, FaDownload, FaPrint, FaShare, FaHo
 import { FiEye, FiTable, FiGrid, FiPackage } from "react-icons/fi";
 import TopBar from './TopBar';
 import GridView from './GridView';
+import ViewModal from './ViewModal';
 import './ParcelsList.css';
 import './UnifiedModal.css';
 
@@ -991,8 +992,8 @@ const ParcelsList = ({ onSidebarToggle }) => {
                   </div>
                 </div>
 
-      {/* View Details Modal */}
-      {viewModalOpen && selectedParcel && (
+      {/* View Details Modal (disabled in favor of unified ViewModal) */}
+      {false && viewModalOpen && selectedParcel && (
         <div className="modal-overlay" onClick={() => setViewModalOpen(false)}>
           <div
             className="modal-content headerless-modal"
@@ -1487,6 +1488,17 @@ const ParcelsList = ({ onSidebarToggle }) => {
           </div>
         </div>
       )}
+
+      {/* Unified View Modal */}
+      <ViewModal
+        isOpen={viewModalOpen && !!selectedParcel}
+        onClose={() => setViewModalOpen(false)}
+        selectedItem={selectedParcel}
+        sectionVisibility={sectionVisibility}
+        toggleSection={toggleSection}
+        statusBadge={statusBadge}
+        handleImageError={handleImageError}
+      />
 
       {/* Edit Modal */}
       {editModalOpen && editParcel && (
