@@ -7,7 +7,7 @@
   background-attachment: fixed;
   animation: gradientShift 15s ease infinite;
   padding: 20px 0 0 0;
-  margin-top: 70px; /* Updated to match new TopBar height */
+  margin-top: 55px; /* Updated to match new smaller TopBar height */
   overflow-x: hidden;
   font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
   position: relative;

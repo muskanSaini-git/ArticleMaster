@@ -1494,7 +1494,7 @@ const ArticleParcel = ({ userRole, currentTab = 1 }) => {
           articleDesc: processed.ARTICLE_DESCRIPTION,
           filePath: processed.FILE_PATH,
           imagesCount: processed.Images.length,
-          imagesSample: processed.Images.length > 0 ? processed.Images[0].substring(0, 50) + '...' : 'No images'
+          imagesSample: processed.Images.length > 0 ? processed.Images[0].substring(0, 50) + '...' : 'Dummy Image'
         });
         
         // Map to backend field names
@@ -2376,8 +2376,8 @@ const ArticleParcel = ({ userRole, currentTab = 1 }) => {
                                      return (
                                        <div className="modern-image-placeholder">
                                          <img 
-                                           src="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48cmVjdCB3aWR0aD0iMTAwIiBmaWxsPSIjNmI3MjgwIiIvPjx0ZXh0IHg9IjUwIiB5PSI1MCIgZm9udC1mYW1pbHk9IkFyaWFsIiBmb250LXNpemU9IjEwIiBmaWxsPSIjNmI3MjgwIiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBkeT0iLjNlbSI+Tm8gSW1hZ2U8L3RleHQ+PC9zdmc+"
-                                           alt="No Image"
+                                           src="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48cmVjdCB3aWR0aD0iMTAwIiBmaWxsPSIjZmFmYWZhIiIvPjxjaXJjbGUgY3g9IjUwIiBjeT0iMzUiIHI9IjE1IiBmaWxsPSIjZGRlNGY3Ii8+PHBhdGggZD0iTTM1IDQ1aDNsLTItNmgydjZ6bTQgMGgzbC0yLTZoMnY2eiIgZmlsbD0iI2RkZTRmNyIvPjx0ZXh0IHg9IjUwIiB5PSI3MCIgZm9udC1mYW1pbHk9IkFyaWFsIiBmb250LXNpemU9IjgiIGZpbGw9IiM5Y2EzYWYiIHRleHQtYW5jaG9yPSJtaWRkbGUiPkltYWdlPC90ZXh0Pjwvc3ZnPg=="
+                                           alt="Dummy Image"
                                            className="modern-image-thumbnail"
                                            style={{ 
                                              width: '40px', 
@@ -2399,7 +2399,7 @@ const ArticleParcel = ({ userRole, currentTab = 1 }) => {
                                          let displayUrl = imageUrl;
                                          
                                          // If it's already our placeholder, use it directly
-                                         if (imageUrl.includes('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48cmVjdCB3aWR0aD0iMTAwIiBmaWxsPSIjNmI3MjgwIiIvPjx0ZXh0IHg9IjUwIiB5PSI1MCIgZm9udC1mYW1pbHk9IkFyaWFsIiBmb250LXNpemU9IjEwIiBmaWxsPSIjNmI3MjgwIiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBkeT0iLjNlbSI+Tm8gSW1hZ2U8L3RleHQ+PC9zdmc+')) {
+                                         if (imageUrl.includes('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48cmVjdCB3aWR0aD0iMTAwIiBmaWxsPSIjZmFmYWZhIiIvPjxjaXJjbGUgY3g9IjUwIiBjeT0iMzUiIHI9IjE1IiBmaWxsPSIjZGRlNGY3Ii8+PHBhdGggZD0iTTM1IDQ1aDNsLTItNmgydjZ6bTQgMGgzbC0yLTZoMnY2eiIgZmlsbD0iI2RkZTRmNyIvPjx0ZXh0IHg9IjUwIiB5PSI3MCIgZm9udC1mYW1pbHk9IkFyaWFsIiBmb250LXNpemU9IjgiIGZpbGw9IiM5Y2EzYWYiIHRleHQtYW5jaG9yPSJtaWRkbGUiPkltYWdlPC90ZXh0Pjwvc3ZnPg==')) {
                                            displayUrl = imageUrl;
                                          } else if (imageUrl.startsWith('data:image')) {
                                            // Base64 image - keep as is

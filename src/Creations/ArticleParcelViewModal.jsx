@@ -2729,7 +2729,25 @@ const ArticleParcelViewModal = ({
                           />
                         ))
                       ) : (
-                        <div style={{ color: '#9ca3af', fontStyle: 'italic', fontSize: 12 }}>No images available</div>
+                        <div style={{ 
+                          display: 'flex', 
+                          alignItems: 'center', 
+                          justifyContent: 'center',
+                          width: '50px',
+                          height: '50px'
+                        }}>
+                          <img 
+                            src="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48cmVjdCB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgZmlsbD0iI2Y5ZmFmYiIvPjxjaXJjbGUgY3g9IjUwIiBjeT0iMzUiIHI9IjE1IiBmaWxsPSIjZGRlNGY3Ii8+PHBhdGggZD0iTTM1IDQ1aDNsLTItNmgydjZ6bTQgMGgzbC0yLTZoMnY2eiIgZmlsbD0iI2RkZTRmNyIvPjx0ZXh0IHg9IjUwIiB5PSI3MCIgZm9udC1mYW1pbHk9IkFyaWFsIiBmb250LXNpemU9IjgiIGZpbGw9IiM5Y2EzYWYiIHRleHQtYW5jaG9yPSJtaWRkbGUiPkltYWdlPC90ZXh0Pjwvc3ZnPg=="
+                            alt="Dummy Image"
+                            style={{ 
+                              width: '50px', 
+                              height: '50px',
+                              border: '1px solid #e5e7eb',
+                              borderRadius: '4px',
+                              backgroundColor: '#f9fafb'
+                            }}
+                          />
+                        </div>
                       );
                     })()}
                   </div>
@@ -2757,7 +2775,24 @@ const ArticleParcelViewModal = ({
               </div>
             </div>
           ) : (
-            <div style={{ margin: '1.5rem', color: '#9ca3af', fontStyle: 'italic', fontSize: 12 }}>No images available</div>
+            <div style={{ 
+              margin: '1.5rem',
+              display: 'flex', 
+              alignItems: 'center', 
+              justifyContent: 'center'
+            }}>
+              <img 
+                src="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48cmVjdCB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgZmlsbD0iI2Y5ZmFmYiIvPjxjaXJjbGUgY3g9IjUwIiBjeT0iMzUiIHI9IjE1IiBmaWxsPSIjZGRlNGY3Ii8+PHBhdGggZD0iTTM1IDQ1aDNsLTItNmgydjZ6bTQgMGgzbC0yLTZoMnY2eiIgZmlsbD0iI2RkZTRmNyIvPjx0ZXh0IHg9IjUwIiB5PSI3MCIgZm9udC1mYW1pbHk9IkFyaWFsIiBmb250LXNpemU9IjgiIGZpbGw9IiM5Y2EzYWYiIHRleHQtYW5jaG9yPSJtaWRkbGUiPkltYWdlPC90ZXh0Pjwvc3ZnPg=="
+                alt="Dummy Image"
+                style={{ 
+                  width: '80px', 
+                  height: '80px',
+                  border: '1px solid #e5e7eb',
+                  borderRadius: '8px',
+                  backgroundColor: '#f9fafb'
+                }}
+              />
+            </div>
           )}
           {/* Animations */}
           <style>{`
