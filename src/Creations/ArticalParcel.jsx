@@ -2258,6 +2258,7 @@ const ArticleParcel = ({ userRole, currentTab = 1 }) => {
         {/* Modern Table */}
         <div className="modern-table-container">
           {/* Send to Approval Button section removed - only use the top button */}
+          {/* Force redeploy - UI fix */}
           
           <div className="modern-table-wrapper">
             <table className="modern-table">
