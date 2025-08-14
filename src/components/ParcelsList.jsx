@@ -293,7 +293,7 @@ const ParcelsList = ({ onSidebarToggle }) => {
       if (parent) {
         const placeholder = document.createElement('div');
         placeholder.className = 'image-placeholder';
-        placeholder.innerHTML = '<span>No Image</span>';
+        placeholder.innerHTML = '<img src="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48cmVjdCB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgZmlsbD0iI2ZhZmFmYSIvPjxjaXJjbGUgY3g9IjUwIiBjeT0iMzUiIHI9IjE1IiBmaWxsPSIjZGRlNGY3Ii8+PHBhdGggZD0iTTM1IDQ1aDNsLTItNmgydjZ6bTQgMGgzbC0yLTZoMnY2eiIgZmlsbD0iI2RkZTRmNyIvPjx0ZXh0IHg9IjUwIiB5PSI3MCIgZm9udC1mYW1pbHk9IkFyaWFsIiBmb250LXNpemU9IjgiIGZpbGw9IiM5Y2EzYWYiIHRleHQtYW5jaG9yPSJtaWRkbGUiPkltYWdlPC90ZXh0Pjwvc3ZnPg==" alt="Dummy Image" style="width: 32px; height: 32px; border-radius: 4px;" />';
         parent.appendChild(placeholder);
       }
     }

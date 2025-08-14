@@ -161,7 +161,7 @@ const PendingParcels = ({ onSidebarToggle }) => {
   const [imageErrors, setImageErrors] = useState([]);
   const [actionLoading, setActionLoading] = useState(null);
   const [rejectionReason, setRejectionReason] = useState('');
-  const [selectedItems, setSelectedItems] = useState(new Set());
+  const [selectedItems, setSelectedItems] = new Set();
   const [selectAll, setSelectAll] = useState(false);
   const [sortBy, setSortBy] = useState('');
   const [sortOrder, setSortOrder] = useState('asc');
@@ -659,7 +659,7 @@ const PendingParcels = ({ onSidebarToggle }) => {
                                             <div className="modern-image-placeholder">
                                               <img 
                                                 src="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48cmVjdCB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgZmlsbD0iI2Y5ZmFmYiIvPjx0ZXh0IHg9IjUwIiB5PSI1MCIgZm9udC1mYW1pbHk9IkFyaWFsIiBmb250LXNpemU9IjEwIiBmaWxsPSIjNmI3MjgwIiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBkeT0iLjNlbSI+Tm8gSW1hZ2U8L3RleHQ+PC9zdmc+"
-                                                alt="No Image"
+                                                alt="Dummy Image"
                                                 style={{ 
                                                   width: '32px', 
                                                   height: '32px',
