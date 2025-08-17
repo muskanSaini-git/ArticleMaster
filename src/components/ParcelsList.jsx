@@ -7,14 +7,14 @@ import ViewModal from './ViewModal';
 import './ParcelsList.css';
 import './UnifiedModal.css';
 
-// Generate static sample data for all parcels
-const generateParcelsData = () => {
+// Generate static sample data for all parcels based on user role
+const generateParcelsData = (userRole) => {
   
   const data = [];
   const segments = ['SEG-A', 'SEG-B', 'SEG-C', 'SEG-D'];
   const divisions = ['DIV-1', 'DIV-2', 'DIV-3', 'DIV-4'];
   const categories = ['Casual Wear', 'Formal Wear', 'Sportswear', 'Outerwear'];
-  const statuses = ['Pending', 'Approved', 'Rejected'];
+  const statuses = ['Draft', 'Pending', 'Sent', 'Approved PO', 'Approved Merchant', 'Approved Admin', 'Rejected PO', 'Rejected Merchant', 'Rejected Admin'];
   const submitters = ['John Doe', 'Jane Smith', 'Mike Johnson', 'Sarah Wilson', 'David Brown'];
   const approvers = ['Admin User', 'Manager A', 'Manager B', 'Supervisor X', 'Director Y'];
   const descriptions = [
@@ -66,7 +66,15 @@ const generateParcelsData = () => {
     const division = divisions[i % 4];
     const category = categories[i % 4];
     const description = descriptions[i % 25];
-    const status = statuses[i % 3];
+    // Generate different statuses based on role
+    let status;
+    if (userRole === 'article_creation') {
+      status = ['Pending', 'Sent', 'Approved PO', 'Approved Merchant', 'Approved Admin', 'Rejected PO', 'Rejected Merchant', 'Rejected Admin'][i % 8];
+    } else if (userRole === 'approval') {
+      status = ['Draft', 'Pending', 'Sent', 'Approved PO', 'Approved Merchant', 'Approved Admin', 'Rejected PO', 'Rejected Merchant', 'Rejected Admin'][i % 9];
+    } else { // admin
+      status = ['Draft', 'Pending', 'Sent', 'Approved PO', 'Approved Merchant', 'Approved Admin', 'Rejected PO', 'Rejected Merchant', 'Rejected Admin'][i % 9];
+    }
     const submitter = submitters[i % 5];
     const approver = status === 'Approved' ? approvers[i % 5] : (status === 'Rejected' ? approvers[i % 5] : '');
 
@@ -206,10 +214,28 @@ const sectionBoxStyle = {
 };
 
 const statusBadge = (status) => {
-  const statusClass = status.toLowerCase();
-  const statusColor = status === 'Pending' ? '#f59e0b' : 
-                     status === 'Approved' ? '#10b981' : 
-                     status === 'Rejected' ? '#ef4444' : '#6b7280';
+  if (!status) return null;
+  const s = status.toLowerCase();
+  
+  let statusColor = '#6b7280';
+  let icon = null;
+  
+  if (s.includes("draft")) {
+    statusColor = '#6b7280';
+    icon = <FaHourglassHalf />;
+  } else if (s.includes("pending")) {
+    statusColor = '#f59e0b';
+    icon = <FaClock />;
+  } else if (s.includes("sent")) {
+    statusColor = '#3b82f6';
+    icon = <FaHourglassHalf />;
+  } else if (s.includes("approved")) {
+    statusColor = '#10b981';
+    icon = <FaCheck />;
+  } else if (s.includes("reject")) {
+    statusColor = '#ef4444';
+    icon = <FaTimes />;
+  }
   
   return (
     <span style={{ 
@@ -221,15 +247,13 @@ const statusBadge = (status) => {
       alignItems: 'center',
       gap: '4px'
     }}>
-      {status === 'Pending' && <FaHourglassHalf />}
-      {status === 'Approved' && <FaCheckCircle />}
-      {status === 'Rejected' && <FaTimesCircle />}
+      {icon}
       <span>{status}</span>
     </span>
   );
 };
 
-const ParcelsList = ({ onSidebarToggle }) => {
+const ParcelsList = ({ onSidebarToggle, userRole }) => {
   // Modal section visibility state
   const [sectionVisibility, setSectionVisibility] = useState({
     basic: true,
@@ -286,6 +310,17 @@ const ParcelsList = ({ onSidebarToggle }) => {
     setCurrentPage(1);
   }, [statusFilter, dateFilter, segmentFilter, divisionFilter, searchTerm]);
 
+  // Prevent body scrolling when component is active
+  useEffect(() => {
+    // Add class to body to prevent scrolling
+    document.body.classList.add('article-parcel-active');
+    
+    // Cleanup function to remove class when component unmounts
+    return () => {
+      document.body.classList.remove('article-parcel-active');
+    };
+  }, []);
+
   const handleImageError = (imageUrl, element) => {
     console.warn(`Failed to load image: ${imageUrl}`);
     if (element && element.target) {
@@ -303,7 +338,7 @@ const ParcelsList = ({ onSidebarToggle }) => {
   const loadStaticData = () => {
     setLoading(true);
     setTimeout(() => {
-      const data = generateParcelsData();
+      const data = generateParcelsData(userRole);
       setParcels(data);
       setFilteredParcels(data);
       setLoading(false);
@@ -389,7 +424,16 @@ const ParcelsList = ({ onSidebarToggle }) => {
       );
       setParcels(updatedParcels);
       setFilteredParcels(updatedParcels.filter(p => 
-        statusFilter === 'all' || p.STATUS.toLowerCase() === statusFilter
+        statusFilter === 'all' || (() => {
+          const status = p.STATUS?.toLowerCase() || '';
+          if (statusFilter === 'approved_po') return status.includes('approved po');
+          if (statusFilter === 'approved_merchant') return status.includes('approved merchant');
+          if (statusFilter === 'approved_admin') return status.includes('approved admin');
+          if (statusFilter === 'rejected_po') return status.includes('rejected po');
+          if (statusFilter === 'rejected_merchant') return status.includes('rejected merchant');
+          if (statusFilter === 'rejected_admin') return status.includes('rejected admin');
+          return status.includes(statusFilter.toLowerCase());
+        })()
       ));
       setActionLoading(null);
       setEditModalOpen(false);
@@ -416,7 +460,7 @@ const ParcelsList = ({ onSidebarToggle }) => {
 
   useEffect(() => {
     loadStaticData();
-  }, []);
+  }, [userRole]);
 
   // Test React Icons
   useEffect(() => {
@@ -451,9 +495,16 @@ const ParcelsList = ({ onSidebarToggle }) => {
     
     // Apply status filter
     if (statusFilter !== 'all') {
-      filtered = filtered.filter(parcel => 
-        parcel.STATUS.toLowerCase() === statusFilter
-      );
+      filtered = filtered.filter(parcel => {
+        const status = parcel.STATUS?.toLowerCase() || '';
+        if (statusFilter === 'approved_po') return status.includes('approved po');
+        if (statusFilter === 'approved_merchant') return status.includes('approved merchant');
+        if (statusFilter === 'approved_admin') return status.includes('approved admin');
+        if (statusFilter === 'rejected_po') return status.includes('rejected po');
+        if (statusFilter === 'rejected_merchant') return status.includes('rejected merchant');
+        if (statusFilter === 'rejected_admin') return status.includes('rejected admin');
+        return status.includes(statusFilter.toLowerCase());
+      });
     }
     
     // Apply date filter
@@ -504,7 +555,11 @@ const ParcelsList = ({ onSidebarToggle }) => {
         <div className="modern-card">
           <div className="loading-container" style={{textAlign: 'center', padding: '60px 0'}}>
             <FaSync className="spinning" style={{fontSize: '2rem', color: '#667eea'}} />
-            <div style={{marginTop: 16, color: '#334155', fontWeight: 500}}>Loading parcels...</div>
+            <div style={{marginTop: 16, color: '#334155', fontWeight: 500}}>
+              {userRole === 'article_creation' ? 'Loading my articles...' : 
+               userRole === 'approval' ? 'Loading all articles...' : 
+               'Loading all articles...'}
+            </div>
           </div>
         </div>
       </div>
@@ -513,7 +568,7 @@ const ParcelsList = ({ onSidebarToggle }) => {
 
   return (
     <div className="article-parcel-container">
-      <TopBar onSidebarToggle={onSidebarToggle} />
+      <TopBar onSidebarToggle={onSidebarToggle} currentPage={userRole === 'article_creation' ? 'my_articles' : 'all_articles'} />
       
       {toastMessage && (
         <div className={`toast-notification ${toastType}`}>
@@ -527,7 +582,9 @@ const ParcelsList = ({ onSidebarToggle }) => {
             <FaSearch className="search-icon" />
             <input
               type="text"
-              placeholder="Search parcels by code, description, segment, division, submitter..."
+              placeholder={userRole === 'article_creation' ? 
+                "Search my articles by code, description, segment..." : 
+                "Search all articles by code, description, segment, status..."}
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
             />
@@ -540,9 +597,15 @@ const ParcelsList = ({ onSidebarToggle }) => {
               onChange={(e) => setStatusFilter(e.target.value)}
             >
               <option value="all">All Status</option>
+              <option value="draft">Draft</option>
               <option value="pending">Pending</option>
-              <option value="approved">Approved</option>
-              <option value="rejected">Rejected</option>
+              <option value="sent">Sent</option>
+              <option value="approved_po">Approved PO</option>
+              <option value="approved_merchant">Approved Merchant</option>
+              <option value="approved_admin">Approved Admin</option>
+              <option value="rejected_po">Rejected PO</option>
+              <option value="rejected_merchant">Rejected Merchant</option>
+              <option value="rejected_admin">Rejected Admin</option>
             </select>
 
             <div className="view-toggle">
@@ -590,7 +653,16 @@ const ParcelsList = ({ onSidebarToggle }) => {
                       const updatedParcels = parcels.filter(p => !selectedParcels.includes(p.ArticleId));
                       setParcels(updatedParcels);
                       setFilteredParcels(updatedParcels.filter(p => 
-                        statusFilter === 'all' || p.STATUS.toLowerCase() === statusFilter
+                        statusFilter === 'all' || (() => {
+          const status = p.STATUS?.toLowerCase() || '';
+          if (statusFilter === 'approved_po') return status.includes('approved po');
+          if (statusFilter === 'approved_merchant') return status.includes('approved merchant');
+          if (statusFilter === 'approved_admin') return status.includes('approved admin');
+          if (statusFilter === 'rejected_po') return status.includes('rejected po');
+          if (statusFilter === 'rejected_merchant') return status.includes('rejected merchant');
+          if (statusFilter === 'rejected_admin') return status.includes('rejected admin');
+          return status.includes(statusFilter.toLowerCase());
+        })()
                       ));
                       setSelectedParcels([]);
                       showToast(`${selectedParcels.length} items deleted successfully!`, 'success');

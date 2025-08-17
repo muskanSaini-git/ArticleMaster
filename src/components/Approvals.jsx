@@ -164,8 +164,10 @@ const Approvals = ({ onSidebarToggle }) => {
   const [customRejectionReason, setCustomRejectionReason] = useState('');
   const [sortOrder, setSortOrder] = useState('asc');
   const [sortBy, setSortBy] = useState('');
-  const [selectedItems, setSelectedItems] = new Set();
+  const [selectedItems, setSelectedItems] = useState(new Set());
   const [selectAll, setSelectAll] = useState(false);
+  const [showReasonModal, setShowReasonModal] = useState(null);
+  const [expandedReasons, setExpandedReasons] = useState(new Set());
   const [sectionVisibility, setSectionVisibility] = useState({
     basic: true,
     garment: false,
@@ -305,6 +307,11 @@ const Approvals = ({ onSidebarToggle }) => {
       newSelectedItems.add(articleId);
     }
     setSelectedItems(newSelectedItems);
+    setSelectAll(newSelectedItems.size === paginatedData.length);
+  };
+
+  const handleShowReason = (row) => {
+    setShowReasonModal(row);
   };
 
   const handleBulkApprove = () => {
@@ -371,6 +378,17 @@ const Approvals = ({ onSidebarToggle }) => {
 
   useEffect(() => {
     loadStaticData();
+  }, []);
+
+  // Prevent body scrolling when component is active
+  useEffect(() => {
+    // Add class to body to prevent scrolling
+    document.body.classList.add('article-parcel-active');
+    
+    // Cleanup function to remove class when component unmounts
+    return () => {
+      document.body.classList.remove('article-parcel-active');
+    };
   }, []);
 
   // Filtering and pagination logic
@@ -597,7 +615,20 @@ const Approvals = ({ onSidebarToggle }) => {
                             return (
                               <td key={colIdx} className="fixed-column" style={{ textAlign: 'center' }}>
                                 {header === "STATUS"
-                                  ? statusBadge(row[actualField])
+                                  ? (
+                                      <div className="status-with-reason">
+                                        <StatusBadge status={row[actualField]} />
+                                        {row.APPROVAL_REASON && (
+                                          <button
+                                            className="reason-icon-btn"
+                                            onClick={() => handleShowReason(row)}
+                                            title="View approval reason"
+                                          >
+                                            <FaInfoCircle className="reason-info-icon" />
+                                          </button>
+                                        )}
+                                      </div>
+                                    )
                                   : header === "IMAGES"
                                     ? (() => {
                                         const imagesArr = Array.isArray(row.Images) ? row.Images : [];
@@ -761,6 +792,17 @@ const Approvals = ({ onSidebarToggle }) => {
           </button>
         </div>
       </div>
+
+      {/* View Modal */}
+      <ViewModal
+        isOpen={selectedApproval !== null}
+        onClose={() => setSelectedApproval(null)}
+        selectedItem={selectedApproval}
+        sectionVisibility={sectionVisibility}
+        toggleSection={toggleSection}
+        statusBadge={StatusBadge}
+        handleImageError={handleImageError}
+      />
 
       {/* Edit Modal */}
       <EditModal

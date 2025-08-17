@@ -11,51 +11,32 @@ const Layout = ({ children, currentPage, onPageChange, accessiblePages = [], use
   const [selectedMasterType, setSelectedMasterType] = useState(null);
 
   const allMenuItems = [
-    // Regular items - show for approval, purchase, merchant, and admin roles
-    ...(user?.role === 'approval' || user?.role === 'purchase' || user?.role === 'merchant' || user?.role === 'admin' ? [
-      { id: 'parcels', label: 'Articles', icon: <FaBox /> },
-      { id: 'pending', label: 'Pending', icon: <FaHourglassHalf /> },
-      { id: 'approvals', label: 'Approvals', icon: <FaCheckCircle /> },
-      { id: 'rejections', label: 'Rejections', icon: <FaTimesCircle /> }
-    ] : []),
-
-    // Article Creation role - only show Articles and Create Article
+    // Article Creation Role Menu
     ...(user?.role === 'article_creation' ? [
-      { id: 'parcels', label: 'Articles', icon: <FaBox /> },
-      { 
-        id: 'article_creation', 
-        label: 'Article Creation', 
-        icon: <FaPlus />,
-        subItems: [
-          { id: 'create_article', label: 'Create Article', icon: <FaPlus /> }
-        ]
-      },
-      { id: 'approve_article', label: 'Approve Article', icon: <FaCheckCircle /> },
-      { id: 'pending_article', label: 'Pending Article', icon: <FaClock /> },
-      { id: 'rejected_article', label: 'Rejected Article', icon: <FaTimesCircle /> }
+      { id: 'create_article', label: 'Create Article', icon: <FaPlus /> },
+      { id: 'approved_articles', label: 'Approved Articles', icon: <FaCheckCircle /> },
+      { id: 'pending_approval', label: 'Pending Approval', icon: <FaClock /> },
+      { id: 'reject_article', label: 'Reject Article', icon: <FaTimesCircle /> }
     ] : []),
 
-    // Article Creation - different menus for different roles
-    ...(user?.role === 'admin' ? [
-      { 
-        id: 'article_creation', 
-        label: 'Article Creation', 
-        icon: <FaPlus />,
-        subItems: [
-          { id: 'article_creation_all', label: 'All Articles', icon: <FaEye /> },
-          { id: 'article_creation_draft', label: 'Draft Articles', icon: <FaFileAlt /> },
-          { id: 'article_creation_pending', label: 'Pending Articles', icon: <FaClock /> },
-          { id: 'article_creation_approved', label: 'Approved Articles', icon: <FaCheckCircle /> },
-          { id: 'article_creation_rejected', label: 'Rejected Articles', icon: <FaTimesCircle /> }
-        ]
-      }
+    // Approval Role Menu (PO + Merchant)
+    ...(user?.role === 'approval' ? [
+      { id: 'all_articles', label: 'All Articles', icon: <FaBox /> },
+      { id: 'pending_approvals', label: 'Pending Approvals', icon: <FaHourglassHalf /> },
+      { id: 'approved_articles', label: 'Approved Articles', icon: <FaCheckCircle /> },
+      { id: 'rejected_articles', label: 'Rejected Articles', icon: <FaTimesCircle /> }
     ] : []),
-    
-    // Master tab - only show for admin role
+
+    // Admin Role Menu
     ...(user?.role === 'admin' ? [
+      { id: 'all_articles', label: 'All Articles', icon: <FaBox /> },
+      { id: 'pending_approvals', label: 'Pending Approvals', icon: <FaHourglassHalf /> },
+      { id: 'approved_articles', label: 'Approved Articles', icon: <FaCheckCircle /> },
+      { id: 'rejected_articles', label: 'Rejected Articles', icon: <FaTimesCircle /> },
+      { id: 'create_article', label: 'Create Article', icon: <FaPlus /> },
       { 
-        id: 'master', 
-        label: 'Master', 
+        id: 'master_management', 
+        label: 'Master Management', 
         icon: <FaCog />,
         subItems: [
           { id: 'master_segments', label: 'Segments', icon: <FaList /> },
@@ -70,7 +51,10 @@ const Layout = ({ children, currentPage, onPageChange, accessiblePages = [], use
           { id: 'master_sizes', label: 'Sizes', icon: <FaList /> }
         ]
       }
-    ] : [])
+    ] : []),
+
+    // Profile - show for all roles
+    { id: 'profile', label: 'Profile', icon: <FaUser /> }
   ];
 
   const toggleSidebar = () => {
@@ -139,7 +123,7 @@ const Layout = ({ children, currentPage, onPageChange, accessiblePages = [], use
           left: 0,
           top: 0,
           height: '100vh',
-          width: '240px',
+          width: '220px',
           background: '#ffffff'
         }}
       >
@@ -158,6 +142,14 @@ const Layout = ({ children, currentPage, onPageChange, accessiblePages = [], use
                user?.role === 'approval' ? 'Approval System' : 'Master'}
             </h1>
           </div>
+          {/* Close Button */}
+          <button 
+            className="sidebar-close-btn"
+            onClick={closeSidebar}
+            title="Close Sidebar"
+          >
+            <FaTimes />
+          </button>
         </div>
 
         {/* Navigation Menu */}
@@ -221,8 +213,8 @@ const Layout = ({ children, currentPage, onPageChange, accessiblePages = [], use
       <div 
         className="main-content"
         style={{
-          marginLeft: sidebarOpen ? '240px' : '0',
-          width: sidebarOpen ? 'calc(100% - 240px)' : '100%',
+          marginLeft: sidebarOpen ? '220px' : '0',
+          width: sidebarOpen ? 'calc(100% - 220px)' : '100%',
           minHeight: '100vh'
         }}
         onClick={() => { if (sidebarOpen) closeSidebar(); }}
@@ -233,6 +225,7 @@ const Layout = ({ children, currentPage, onPageChange, accessiblePages = [], use
           currentPage={currentPage}
           user={user}
           onLogout={handleLogout}
+          onPageChange={onPageChange}
         />
         
         {/* Content Area */}

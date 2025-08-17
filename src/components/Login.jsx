@@ -1,17 +1,25 @@
 import React, { useState } from 'react';
-import { FaEye, FaEyeSlash, FaUser, FaLock } from 'react-icons/fa';
+import { FaEye, FaEyeSlash, FaUser, FaLock, FaUserTie } from 'react-icons/fa';
 import './Login.css';
 import jwtService from '../utils/jwtService';
 
 const Login = ({ onLogin }) => {
   const [formData, setFormData] = useState({
     username: '200300',
-    password: ''
+    password: '',
+    roleType: 'article_creation' // Default role
   });
   const [showPassword, setShowPassword] = useState(false);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
   const [rememberMe, setRememberMe] = useState(false);
+
+  // Role types based on project flow
+  const roleTypes = [
+    { value: 'article_creation', label: 'Article Creation', description: 'Create articles and send for approval' },
+    { value: 'approval', label: 'Approval (PO + Merchant)', description: 'Receive and approve/reject articles' },
+    { value: 'admin', label: 'Admin', description: 'Create articles + approve/reject + master management' }
+  ];
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -34,73 +42,39 @@ const Login = ({ onLogin }) => {
       // Simulate API delay
       await new Promise(resolve => setTimeout(resolve, 1000));
       
-      // Demo user validation
+      // Demo user validation based on selected role
       let userData = null;
-      let internalRole = 'user';
+      let internalRole = formData.roleType; // Use selected role
       
-      // Simple demo validation
-      if (formData.username === 'admin' && formData.password === 'admin123') {
-        internalRole = 'admin';
-        userData = {
+      // Generate user data based on selected role
+      const roleConfig = {
+        article_creation: {
           id: 1,
-          username: 'admin',
-          email: 'admin@demo.com',
-          roleName: 'Admin',
-          accessToken: 'demo-admin-token-' + Date.now(),
-          refreshToken: 'demo-refresh-token-' + Date.now()
-        };
-      } else if (formData.username === 'article' && formData.password === 'article123') {
-        internalRole = 'article_creation';
-        userData = {
-          id: 2,
-          username: 'article',
-          email: 'article@demo.com',
+          username: formData.username || 'article_creator',
+          email: (formData.username || 'article_creator') + '@demo.com',
           roleName: 'Article Creator',
           accessToken: 'demo-article-token-' + Date.now(),
           refreshToken: 'demo-refresh-token-' + Date.now()
-        };
-      } else if (formData.username === 'approval' && formData.password === 'approval123') {
-        internalRole = 'approval';
-        userData = {
-          id: 3,
-          username: 'approval',
-          email: 'approval@demo.com',
-          roleName: 'Approver',
+        },
+        approval: {
+          id: 2,
+          username: formData.username || 'approver',
+          email: (formData.username || 'approver') + '@demo.com',
+          roleName: 'Approver (PO + Merchant)',
           accessToken: 'demo-approval-token-' + Date.now(),
           refreshToken: 'demo-refresh-token-' + Date.now()
-        };
-      } else if (formData.username === 'purchase' && formData.password === 'purchase123') {
-        internalRole = 'purchase';
-        userData = {
-          id: 4,
-          username: 'purchase',
-          email: 'purchase@demo.com',
-          roleName: 'Purchase Officer',
-          accessToken: 'demo-purchase-token-' + Date.now(),
+        },
+        admin: {
+          id: 3,
+          username: formData.username || 'admin',
+          email: (formData.username || 'admin') + '@demo.com',
+          roleName: 'Administrator',
+          accessToken: 'demo-admin-token-' + Date.now(),
           refreshToken: 'demo-refresh-token-' + Date.now()
-        };
-      } else if (formData.username === 'merchant' && formData.password === 'merchant123') {
-        internalRole = 'merchant';
-        userData = {
-          id: 5,
-          username: 'merchant',
-          email: 'merchant@demo.com',
-          roleName: 'Merchant',
-          accessToken: 'demo-merchant-token-' + Date.now(),
-          refreshToken: 'demo-refresh-token-' + Date.now()
-        };
-      } else {
-        // Default demo user
-        internalRole = 'user';
-        userData = {
-          id: 6,
-          username: formData.username,
-          email: formData.username + '@demo.com',
-          roleName: 'User',
-          accessToken: 'demo-user-token-' + Date.now(),
-          refreshToken: 'demo-refresh-token-' + Date.now()
-        };
-      }
+        }
+      };
+
+      userData = roleConfig[internalRole];
 
       try {
         // Store user data and tokens using correct JWT service functions
@@ -180,7 +154,28 @@ const Login = ({ onLogin }) => {
                 </div>
               </div>
 
-
+              <div className="form-field">
+                <label className="form-label">
+                  <FaUserTie className="field-icon" />
+                  Role Type
+                </label>
+                <select
+                  name="roleType"
+                  value={formData.roleType}
+                  onChange={handleChange}
+                  className="form-input role-select"
+                  required
+                >
+                  {roleTypes.map(role => (
+                    <option key={role.value} value={role.value}>
+                      {role.label}
+                    </option>
+                  ))}
+                </select>
+                <small className="role-description">
+                  {roleTypes.find(r => r.value === formData.roleType)?.description}
+                </small>
+              </div>
 
               {error && (
                 <div className="error-message">

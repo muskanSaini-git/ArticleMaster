@@ -387,6 +387,17 @@ const Rejections = ({ onSidebarToggle }) => {
     loadStaticData();
   }, []);
 
+  // Prevent body scrolling when component is active
+  useEffect(() => {
+    // Add class to body to prevent scrolling
+    document.body.classList.add('article-parcel-active');
+    
+    // Cleanup function to remove class when component unmounts
+    return () => {
+      document.body.classList.remove('article-parcel-active');
+    };
+  }, []);
+
   // Filtering and pagination logic
   const filteredData = displayedArticles.filter(row => Object.values(row).join(' ').toLowerCase().includes(searchQuery.toLowerCase()));
 

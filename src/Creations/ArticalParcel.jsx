@@ -512,6 +512,17 @@ const ArticleParcel = ({ userRole, currentTab = 1 }) => {
   // Deleted articles state
   const [deletedArticles, setDeletedArticles] = useState([]);
 
+  // Prevent body scrolling when component is active
+  useEffect(() => {
+    // Add class to body to prevent scrolling
+    document.body.classList.add('article-parcel-active');
+    
+    // Cleanup function to remove class when component unmounts
+    return () => {
+      document.body.classList.remove('article-parcel-active');
+    };
+  }, []);
+
   // Sync currentTabState with currentTab prop
   useEffect(() => {
     setCurrentTab(currentTab);
@@ -520,6 +531,29 @@ const ArticleParcel = ({ userRole, currentTab = 1 }) => {
   // Handler for individual article approval
   const handleIndividualApproval = async (articleId) => {
     try {
+      // For admin users, automatically approve articles without sending for approval
+      if (userRole === 'admin') {
+        console.log('🔄 Admin user - automatically approving article:', articleId);
+        setApprovalMessage("🔄 Admin user - automatically approving article...");
+        
+        // Update the article status directly to 'Approved Admin'
+        setArticleRows(prevRows => prevRows.map(row =>
+          row.ArticleId === articleId ? { ...row, STATUS: 'Approved Admin', CREATED_BY: 'admin' } : row
+        ));
+        
+        // Update displayed articles as well
+        setDisplayedArticles(prevDisplayed => prevDisplayed.map(row =>
+          row.ArticleId === articleId ? { ...row, STATUS: 'Approved Admin', CREATED_BY: 'admin' } : row
+        ));
+        
+        setApprovalMessage("✅ Article automatically approved by admin!");
+        setTimeout(() => {
+          setApprovalMessage("");
+        }, 3000);
+        return;
+      }
+      
+      // For non-admin users, send for approval as usual
       console.log('🔄 Sending individual article for approval:', articleId);
       setApprovalMessage("🔄 Sending article for approval...");
       
@@ -1416,7 +1450,7 @@ const ArticleParcel = ({ userRole, currentTab = 1 }) => {
             }
             
             // Set default values
-            newArticle.STATUS = userRole === 'admin' ? 'Approved' : 'Pending'; // Auto-approve for admin
+            newArticle.STATUS = userRole === 'admin' ? 'Approved Admin' : 'Pending'; // Auto-approve for admin
             newArticle.DATE = newArticle.DATE || new Date().toISOString().split('T')[0];
             newArticle.ART_CR_DATE = newArticle.ART_CR_DATE || new Date().toISOString().split('T')[0];
             
@@ -1512,7 +1546,7 @@ const ArticleParcel = ({ userRole, currentTab = 1 }) => {
             ...selectedRow, 
             ...updatedArticle, 
             DATE: new Date().toISOString().split('T')[0],
-            STATUS: userRole === 'admin' ? 'Approved' : (selectedRow.STATUS || 'Pending') // Auto-approve for admin
+            STATUS: userRole === 'admin' ? 'Approved Admin' : (selectedRow.STATUS || 'Pending') // Auto-approve for admin
           };
           
           setArticleRows(prevRows => 
@@ -1792,7 +1826,8 @@ const ArticleParcel = ({ userRole, currentTab = 1 }) => {
       // Add back to active articles
       const restoredArticle = { ...deletedArticle };
       delete restoredArticle.deletedAt; // Remove deletion timestamp
-      restoredArticle.STATUS = 'Pending'; // Reset status to pending
+      // For admin users, restore with Approved Admin status; for others, reset to Pending
+      restoredArticle.STATUS = userRole === 'admin' ? 'Approved Admin' : 'Pending';
       
       setArticleRows(prev => [...prev, restoredArticle]);
       setDisplayedArticles(prev => [...prev, restoredArticle]);
@@ -1948,6 +1983,43 @@ const ArticleParcel = ({ userRole, currentTab = 1 }) => {
   // Update confirmBatchApproval to use the approval API
   const confirmBatchApproval = async () => {
     if (selectedRows.length === 0) return;
+    
+    // For admin users, automatically approve articles without sending for approval
+    if (userRole === 'admin') {
+      try {
+        setApprovalMessage("🔄 Admin user - automatically approving articles...");
+        
+        // Update STATUS directly to 'Approved Admin' for the relevant articles in local state
+        setArticleRows(prevRows => prevRows.map(row =>
+          selectedRows.includes(row.ArticleId) ? { ...row, STATUS: 'Approved Admin', CREATED_BY: 'admin' } : row
+        ));
+        
+        // Update displayed articles as well
+        setDisplayedArticles(prevDisplayed => prevDisplayed.map(row =>
+          selectedRows.includes(row.ArticleId) ? { ...row, STATUS: 'Approved Admin', CREATED_BY: 'admin' } : row
+        ));
+        
+        console.log(`✅ ${selectedRows.length} article(s) automatically approved by admin!`);
+        setApprovalMessage(`✅ ${selectedRows.length} article(s) automatically approved by admin!`);
+        
+        setTimeout(() => {
+          setApprovalMessage("");
+        }, 3000);
+        
+        setSelectedRows([]);
+        setShowApprovalModal(false);
+        return;
+      } catch (err) {
+        console.error('❌ Admin approval error:', err);
+        setApprovalMessage("❌ Error auto-approving articles: " + err.message);
+        setTimeout(() => {
+          setApprovalMessage("");
+        }, 3000);
+        return;
+      }
+    }
+    
+    // For non-admin users, send for approval as usual
     try {
       setApprovalMessage("🔄 Sending articles for approval...");
       
@@ -2001,8 +2073,8 @@ const ArticleParcel = ({ userRole, currentTab = 1 }) => {
         console.log(`✅ Article ${action.toLowerCase()}d successfully:`, result);
         setApprovalMessage(`✅ Article ${action.toLowerCase()}d successfully!`);
         
-        // Update article status
-        const newStatus = action === 'Approve' ? 'Approved' : 'Rejected';
+        // Update article status - for admin users, use "Approved Admin" instead of just "Approved"
+        const newStatus = action === 'Approve' ? (userRole === 'admin' ? 'Approved Admin' : 'Approved') : 'Rejected';
         setArticleRows(prevRows => prevRows.map(row =>
           row.ArticleId === articleId ? { ...row, STATUS: newStatus } : row
         ));
@@ -2030,6 +2102,28 @@ const ArticleParcel = ({ userRole, currentTab = 1 }) => {
   // Handle individual article send for approval
   const handleSendForApproval = async (articleId) => {
     try {
+      // For admin users, automatically approve articles without sending for approval
+      if (userRole === 'admin') {
+        console.log('🔄 Admin user - automatically approving article:', articleId);
+        setApprovalMessage("🔄 Admin user - automatically approving article...");
+        
+        // Update the article status directly to 'Approved Admin'
+        setArticleRows(prevRows => prevRows.map(row =>
+          row.ArticleId === articleId ? { ...row, STATUS: 'Approved Admin', CREATED_BY: 'admin' } : row
+        ));
+        
+        setDisplayedArticles(prevDisplayed => prevDisplayed.map(row =>
+          row.ArticleId === articleId ? { ...row, STATUS: 'Approved Admin', CREATED_BY: 'admin' } : row
+        ));
+        
+        setApprovalMessage("✅ Article automatically approved by admin!");
+        setTimeout(() => {
+          setApprovalMessage("");
+        }, 3000);
+        return;
+      }
+      
+      // For non-admin users, send for approval as usual
       setApprovalMessage("🔄 Sending article for approval...");
       
       // Use the approval service with JWT authentication
@@ -2046,7 +2140,6 @@ const ArticleParcel = ({ userRole, currentTab = 1 }) => {
           row.ArticleId === articleId ? { ...row, STATUS: 'Sent for Approval' } : row
         ));
         
-        // Update displayed articles as well
         setDisplayedArticles(prevDisplayed => prevDisplayed.map(row =>
           row.ArticleId === articleId ? { ...row, STATUS: 'Sent for Approval' } : row
         ));
@@ -2182,6 +2275,41 @@ const ArticleParcel = ({ userRole, currentTab = 1 }) => {
     }
 
     try {
+      // For admin users, automatically approve articles without sending for approval
+      if (userRole === 'admin') {
+        // Update the status of selected articles directly to "Approved Admin"
+        setArticleRows(prevRows => 
+          prevRows.map(row => 
+            selectedRows.includes(row.ArticleId) 
+              ? { ...row, STATUS: 'Approved Admin', CREATED_BY: 'admin' }
+              : row
+          )
+        );
+
+        // Update displayed articles as well
+        setDisplayedArticles(prevDisplayed => 
+          prevDisplayed.map(row => 
+            selectedRows.includes(row.ArticleId) 
+              ? { ...row, STATUS: 'Approved Admin', CREATED_BY: 'admin' }
+              : row
+          )
+        );
+
+        // Clear selection
+        setSelectedRows([]);
+
+        // Show success message for admin
+        setApprovalMessage(`✅ ${selectedRows.length} article(s) automatically approved by admin! Status changed to "Approved Admin"`);
+        
+        // Auto-hide message after 5 seconds
+        setTimeout(() => setApprovalMessage(""), 5000);
+
+        // Force table refresh
+        setRefreshTrigger(prev => prev + 1);
+        return;
+      }
+
+      // For non-admin users, send for approval as usual
       // Update the status of selected articles to "Sent for Approval"
       setArticleRows(prevRows => 
         prevRows.map(row => 
@@ -2359,7 +2487,7 @@ const ArticleParcel = ({ userRole, currentTab = 1 }) => {
             </div>
             <div className="modern-batch-buttons">
               <button className="modern-btn modern-btn-success" onClick={handleSendToApproval}>
-                <FaCheckCircle /> Send to Approval
+                <FaCheckCircle /> {userRole === 'admin' ? 'Auto Approve' : 'Send to Approval'}
               </button>
               <button className="modern-btn modern-btn-danger" onClick={() => setDeleteModalOpen(true)}>
                 <FiTrash /> Delete Selected

@@ -1,253 +1,267 @@
-import React, { useState } from 'react';
-import { FaUser, FaEnvelope, FaPhone, FaMapMarkerAlt, FaEdit, FaSave, FaTimes, FaUserCircle, FaBuilding, FaIdCard } from 'react-icons/fa';
+import React, { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
+import jwtService from '../utils/jwtService';
 import './Profile.css';
 
-const Profile = ({ isOpen, onClose }) => {
-  const [isEditing, setIsEditing] = useState(false);
+const Profile = () => {
+  const navigate = useNavigate();
   const [profileData, setProfileData] = useState({
-    name: 'Manager',
-    email: 'manager@company.com',
-    phone: '+91 98765 43210',
-    department: 'Article Management',
-    role: 'Senior Manager',
-    employeeId: 'EMP001',
-    location: 'Mumbai, India',
-    joinDate: '2023-01-15',
-    avatar: null
+    title: '',
+    firstName: '',
+    middleName: '',
+    lastName: '',
+    fullName: '',
+    gender: '',
+    dateOfBirth: '',
+    fatherName: '',
+    motherName: '',
+    wifeName: '',
+    husbandName: '',
+    maritalStatus: '',
+    placeOfBirth: '',
+    address: '',
+    nation: '',
+    email: '',
+    phone: ''
   });
 
-  const [formData, setFormData] = useState(profileData);
+  // Load user data from jwtService
+  useEffect(() => {
+    const loadUserData = () => {
+      const userData = jwtService.getUserData();
+      if (userData) {
+        // Map user data to profile fields
+        setProfileData({
+          title: userData.title || 'Mr.',
+          firstName: userData.firstName || userData.name?.split(' ')[0] || '',
+          middleName: userData.middleName || userData.name?.split(' ')[1] || '',
+          lastName: userData.lastName || userData.name?.split(' ').slice(2).join(' ') || '',
+          fullName: userData.fullName || userData.name || '',
+          gender: userData.gender || '',
+          dateOfBirth: userData.dateOfBirth || '',
+          fatherName: userData.fatherName || '',
+          motherName: userData.motherName || '',
+          wifeName: userData.wifeName || '',
+          husbandName: userData.husbandName || '',
+          maritalStatus: userData.maritalStatus || 'Single',
+          placeOfBirth: userData.placeOfBirth || '',
+          address: userData.address || '',
+          nation: userData.nation || '',
+          email: userData.email || userData.emailAddress || '',
+          phone: userData.phone || userData.phoneNumber || ''
+        });
+      } else {
+        // If no user data exists, initialize with default data
+        const defaultData = {
+          title: 'Mr.',
+          firstName: 'User',
+          middleName: '',
+          lastName: 'Name',
+          fullName: 'User Name',
+          gender: 'Not specified',
+          dateOfBirth: 'Not specified',
+          fatherName: 'Not specified',
+          motherName: 'Not specified',
+          wifeName: '',
+          husbandName: '',
+          maritalStatus: 'Single',
+          placeOfBirth: 'Not specified',
+          address: 'Not specified',
+          nation: 'Not specified',
+          email: 'user@example.com',
+          phone: 'Not specified'
+        };
+        
+        // Store default data in jwtService
+        jwtService.storeUserData(defaultData);
+        setProfileData(defaultData);
+      }
+    };
 
-  const handleEdit = () => {
-    setIsEditing(true);
-    setFormData(profileData);
+    loadUserData();
+
+    // Listen for storage changes to update profile when data changes
+    const handleStorageChange = (e) => {
+      if (e.key === 'userData') {
+        loadUserData();
+      }
+    };
+
+    // Listen for custom profile update events
+    const handleProfileUpdate = (e) => {
+      if (e.detail) {
+        // Update profile data immediately when EditProfile saves
+        setProfileData({
+          title: e.detail.title || 'Mr.',
+          firstName: e.detail.firstName || e.detail.name?.split(' ')[0] || '',
+          middleName: e.detail.middleName || e.detail.name?.split(' ')[1] || '',
+          lastName: e.detail.lastName || e.detail.name?.split(' ').slice(2).join(' ') || '',
+          fullName: e.detail.fullName || e.detail.name || '',
+          gender: e.detail.gender || '',
+          dateOfBirth: e.detail.dateOfBirth || '',
+          fatherName: e.detail.fatherName || '',
+          motherName: e.detail.motherName || '',
+          wifeName: e.detail.wifeName || '',
+          husbandName: e.detail.husbandName || '',
+          maritalStatus: e.detail.maritalStatus || 'Single',
+          placeOfBirth: e.detail.placeOfBirth || '',
+          address: e.detail.address || '',
+          nation: e.detail.nation || '',
+          email: e.detail.email || e.detail.emailAddress || '',
+          phone: e.detail.phone || e.detail.phoneNumber || ''
+        });
+      }
+    };
+
+    window.addEventListener('storage', handleStorageChange);
+    window.addEventListener('profileUpdated', handleProfileUpdate);
+    
+    // Also check for changes every few seconds (fallback)
+    const interval = setInterval(loadUserData, 3000);
+
+    return () => {
+      window.removeEventListener('storage', handleStorageChange);
+      window.removeEventListener('profileUpdated', handleProfileUpdate);
+      clearInterval(interval);
+    };
+  }, []);
+
+  // Function to determine which spouse name field to show
+  const shouldShowSpouseName = () => {
+    return profileData.maritalStatus === 'Married';
   };
 
-  const handleSave = () => {
-    setProfileData(formData);
-    setIsEditing(false);
-  };
-
-  const handleCancel = () => {
-    setIsEditing(false);
-    setFormData(profileData);
-  };
-
-  const handleInputChange = (field, value) => {
-    setFormData(prev => ({
-      ...prev,
-      [field]: value
-    }));
-  };
-
-  const handleAvatarChange = (event) => {
-    const file = event.target.files[0];
-    if (file) {
-      const reader = new FileReader();
-      reader.onload = (e) => {
-        setFormData(prev => ({
-          ...prev,
-          avatar: e.target.result
-        }));
-      };
-      reader.readAsDataURL(file);
+  // Function to determine spouse name label based on title and gender
+  const getSpouseNameLabel = () => {
+    if (profileData.title === 'Mr.') {
+      return 'Wife\'s Name';
+    } else if (profileData.title === 'Mrs.' || profileData.title === 'Ms.') {
+      return 'Husband\'s Name';
     }
+    return 'Spouse\'s Name';
   };
 
-  if (!isOpen) return null;
+  // Function to get the current spouse name value
+  const getSpouseNameValue = () => {
+    if (profileData.title === 'Mr.') {
+      return profileData.wifeName;
+    } else if (profileData.title === 'Mrs.' || profileData.title === 'Ms.') {
+      return profileData.husbandName;
+    }
+    return profileData.wifeName || profileData.husbandName;
+  };
+
+  const handleEditProfile = () => {
+    navigate('/edit-profile');
+  };
 
   return (
-    <div className="profile-modal-overlay" onClick={onClose}>
-      <div className="profile-modal-content" onClick={(e) => e.stopPropagation()}>
+    <div className="profile-container">
+      <div className="profile-card">
         {/* Header */}
-        <div className="profile-modal-header">
-          <div className="profile-modal-title">
-            <FaUserCircle className="profile-modal-icon" />
-            <h2>Profile</h2>
-          </div>
-          <div className="profile-modal-actions">
-            {!isEditing ? (
-              <button className="profile-edit-btn" onClick={handleEdit}>
-                <FaEdit />
-                Edit
+        <div className="profile-header">
+          <div className="header-content">
+            <h2>Personal Information</h2>
+            <div className="header-actions">
+              <button className="refresh-btn" onClick={() => window.location.reload()}>
+                🔄 Refresh
               </button>
-            ) : (
-              <div className="profile-edit-actions">
-                <button className="profile-save-btn" onClick={handleSave}>
-                  <FaSave />
-                  Save
-                </button>
-                <button className="profile-cancel-btn" onClick={handleCancel}>
-                  <FaTimes />
-                  Cancel
+              <button className="edit-btn" onClick={handleEditProfile}>
+                Edit Profile
                 </button>
               </div>
-            )}
-            <button className="profile-close-btn" onClick={onClose}>
-              <FaTimes />
-            </button>
           </div>
         </div>
 
-        {/* Content */}
-        <div className="profile-modal-body">
-          <div className="profile-content">
-            {/* Avatar Section */}
-            <div className="profile-avatar-section">
-              <div className="profile-avatar-container">
-                {formData.avatar ? (
-                  <img 
-                    src={formData.avatar} 
-                    alt="Profile" 
-                    className="profile-avatar-image"
-                  />
-                ) : (
-                  <div className="profile-avatar-placeholder">
-                    <FaUserCircle />
-                  </div>
-                )}
-                {isEditing && (
-                  <label className="profile-avatar-upload">
-                    <input
-                      type="file"
-                      accept="image/*"
-                      onChange={handleAvatarChange}
-                      style={{ display: 'none' }}
-                    />
-                    <FaEdit className="upload-icon" />
-                  </label>
-                )}
+        {/* Body */}
+        <div className="profile-body">
+          {/* Two Column Layout */}
+          <div className="info-columns">
+            {/* Left Column */}
+            <div className="info-column">
+              <div className="form-group">
+                <label className="required-field">Title </label>
+                <div className="form-display">{profileData.title || 'Not specified'}</div>
               </div>
+
+              <div className="form-group">
+                <label className="required-field">First Name </label>
+                <div className="form-display">{profileData.firstName || 'Not specified'}</div>
+                  </div>
+
+              <div className="form-group">
+                <label className="optional-field">Middle Name </label>
+                <div className="form-display">{profileData.middleName || 'Not specified'}</div>
+              </div>
+
+              <div className="form-group">
+                <label className="required-field">Last Name </label>
+                <div className="form-display">{profileData.lastName || 'Not specified'}</div>
             </div>
 
-            {/* Profile Information */}
-            <div className="profile-info-section">
-              <div className="profile-info-grid">
-                {/* Name */}
-                <div className="profile-info-item">
-                  <label className="profile-info-label">
-                    <FaUser className="profile-info-icon" />
-                    Full Name
-                  </label>
-                  {isEditing ? (
-                    <input
-                      type="text"
-                      value={formData.name}
-                      onChange={(e) => handleInputChange('name', e.target.value)}
-                      className="profile-info-input"
-                    />
-                  ) : (
-                    <div className="profile-info-value">{profileData.name}</div>
-                  )}
+              <div className="form-group">
+                <label className="required-field">Full Name </label>
+                <div className="form-display">{profileData.fullName || 'Not specified'}</div>
                 </div>
 
-                {/* Email */}
-                <div className="profile-info-item">
-                  <label className="profile-info-label">
-                    <FaEnvelope className="profile-info-icon" />
-                    Email
-                  </label>
-                  {isEditing ? (
-                    <input
-                      type="email"
-                      value={formData.email}
-                      onChange={(e) => handleInputChange('email', e.target.value)}
-                      className="profile-info-input"
-                    />
-                  ) : (
-                    <div className="profile-info-value">{profileData.email}</div>
-                  )}
+              <div className="form-group">
+                <label className="required-field">Gender </label>
+                <div className="form-display">{profileData.gender || 'Not specified'}</div>
                 </div>
 
-                {/* Phone */}
-                <div className="profile-info-item">
-                  <label className="profile-info-label">
-                    <FaPhone className="profile-info-icon" />
-                    Phone
-                  </label>
-                  {isEditing ? (
-                    <input
-                      type="tel"
-                      value={formData.phone}
-                      onChange={(e) => handleInputChange('phone', e.target.value)}
-                      className="profile-info-input"
-                    />
-                  ) : (
-                    <div className="profile-info-value">{profileData.phone}</div>
-                  )}
+              <div className="form-group">
+                <label className="required-field">Date of Birth </label>
+                <div className="form-display">{profileData.dateOfBirth || 'Not specified'}</div>
                 </div>
 
-                {/* Department */}
-                <div className="profile-info-item">
-                  <label className="profile-info-label">
-                    <FaBuilding className="profile-info-icon" />
-                    Department
-                  </label>
-                  {isEditing ? (
-                    <input
-                      type="text"
-                      value={formData.department}
-                      onChange={(e) => handleInputChange('department', e.target.value)}
-                      className="profile-info-input"
-                    />
-                  ) : (
-                    <div className="profile-info-value">{profileData.department}</div>
-                  )}
+              <div className="form-group">
+                <label className="required-field">Marital Status </label>
+                <div className="form-display">{profileData.maritalStatus || 'Not specified'}</div>
                 </div>
 
-                {/* Role */}
-                <div className="profile-info-item">
-                  <label className="profile-info-label">
-                    <FaUser className="profile-info-icon" />
-                    Role
-                  </label>
-                  {isEditing ? (
-                    <input
-                      type="text"
-                      value={formData.role}
-                      onChange={(e) => handleInputChange('role', e.target.value)}
-                      className="profile-info-input"
-                    />
-                  ) : (
-                    <div className="profile-info-value">{profileData.role}</div>
-                  )}
+              <div className="form-group">
+                <label className="optional-field">Father's Name </label>
+                <div className="form-display">{profileData.fatherName || 'Not specified'}</div>
                 </div>
 
-                {/* Employee ID */}
-                <div className="profile-info-item">
-                  <label className="profile-info-label">
-                    <FaIdCard className="profile-info-icon" />
-                    Employee ID
-                  </label>
-                  <div className="profile-info-value">{profileData.employeeId}</div>
+              <div className="form-group">
+                <label className="optional-field">Mother's Name </label>
+                <div className="form-display">{profileData.motherName || 'Not specified'}</div>
+              </div>
                 </div>
 
-                {/* Location */}
-                <div className="profile-info-item">
-                  <label className="profile-info-label">
-                    <FaMapMarkerAlt className="profile-info-icon" />
-                    Location
-                  </label>
-                  {isEditing ? (
-                    <input
-                      type="text"
-                      value={formData.location}
-                      onChange={(e) => handleInputChange('location', e.target.value)}
-                      className="profile-info-input"
-                    />
-                  ) : (
-                    <div className="profile-info-value">{profileData.location}</div>
-                  )}
+            {/* Right Column */}
+            <div className="info-column">
+              <div className="form-group">
+                <label className="optional-field">Place of Birth </label>
+                <div className="form-display">{profileData.placeOfBirth || 'Not specified'}</div>
                 </div>
 
-                {/* Join Date */}
-                <div className="profile-info-item">
-                  <label className="profile-info-label">
-                    <FaUser className="profile-info-icon" />
-                    Join Date
-                  </label>
-                  <div className="profile-info-value">{profileData.joinDate}</div>
+              {shouldShowSpouseName() && (
+                <div className="form-group">
+                  <label className="optional-field">{getSpouseNameLabel()} </label>
+                  <div className="form-display">{getSpouseNameValue() || 'Not specified'}</div>
                 </div>
+              )}
+
+              <div className="form-group">
+                <label className="optional-field">Nation </label>
+                <div className="form-display">{profileData.nation || 'Not specified'}</div>
+              </div>
+
+              <div className="form-group">
+                <label className="optional-field">Phone </label>
+                <div className="form-display">{profileData.phone || 'Not specified'}</div>
+              </div>
+
+              <div className="form-group">
+                <label className="optional-field">Email </label>
+                <div className="form-display">{profileData.email || 'Not specified'}</div>
+              </div>
+
+              <div className="form-group">
+                <label className="optional-field">Address </label>
+                <div className="form-display">{profileData.address || 'Not specified'}</div>
               </div>
             </div>
           </div>

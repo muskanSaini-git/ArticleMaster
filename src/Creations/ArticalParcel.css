@@ -458,12 +458,12 @@
 .modern-table {
   width: 100%;
   border-collapse: collapse;
-  border-spacing: 0;
   background: transparent;
-  margin: 0;
-  border-radius: 10px;
-  overflow: hidden;
-  box-shadow: none;
+  font-size: 13px;
+  position: relative;
+  table-layout: fixed !important;
+  word-wrap: break-word;
+  overflow-wrap: break-word;
 }
 
 .modern-table-wrapper {
@@ -476,9 +476,9 @@
 }
 
 .modern-table thead {
-  position: sticky;
-  top: 0;
-  z-index: 10;
+  position: sticky !important;
+  top: 0 !important;
+  z-index: 10 !important;
   background: rgba(255, 255, 255, 0.95);
   backdrop-filter: blur(20px);
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
@@ -494,9 +494,9 @@
   padding: 10px 8px;
   text-align: center;
   border: none;
-  position: sticky;
-  top: 0;
-  z-index: 10;
+  position: sticky !important;
+  top: 0 !important;
+  z-index: 10 !important;
   text-transform: none;
   letter-spacing: 0.1px;
   box-shadow: none;
@@ -596,50 +596,114 @@
   min-width: 60px;
 }
 
-/* Fixed column widths for 7 columns */
-.modern-table th.fixed-column:nth-child(1) { /* Checkbox */
+/* Fixed column widths for all columns */
+.modern-table th:nth-child(1) { /* Checkbox */
   width: 50px;
   min-width: 50px;
+  max-width: 50px;
 }
 
-.modern-table th.fixed-column:nth-child(2) { /* MC_CODE */
+.modern-table th:nth-child(2) { /* MC_CODE */
   width: 120px;
   min-width: 120px;
+  max-width: 120px;
 }
 
-.modern-table th.fixed-column:nth-child(3) { /* FG_SEG */
+.modern-table th:nth-child(3) { /* FG_SEG */
   width: 100px;
   min-width: 100px;
+  max-width: 100px;
 }
 
-.modern-table th.fixed-column:nth-child(4) { /* FG_DIV */
+.modern-table th:nth-child(4) { /* FG_DIV */
   width: 100px;
   min-width: 100px;
+  max-width: 100px;
 }
 
-.modern-table th.fixed-column:nth-child(5) { /* MJ_CAT */
+.modern-table th:nth-child(5) { /* MJ_CAT */
   width: 150px;
   min-width: 150px;
+  max-width: 150px;
 }
 
-.modern-table th.fixed-column:nth-child(6) { /* ARTICLE_DESCRIPTION */
+.modern-table th:nth-child(6) { /* ARTICLE_DESCRIPTION */
   width: 200px;
   min-width: 200px;
+  max-width: 200px;
 }
 
-.modern-table th.fixed-column:nth-child(7) { /* STATUS */
+.modern-table th:nth-child(7) { /* STATUS */
   width: 100px;
   min-width: 100px;
+  max-width: 100px;
 }
 
-.modern-table th.fixed-column:nth-child(8) { /* Images */
+.modern-table th:nth-child(8) { /* Images */
   width: 120px;
   min-width: 120px;
+  max-width: 120px;
 }
 
-.modern-table th.fixed-column:nth-child(9) { /* Actions */
+.modern-table th:nth-child(9) { /* Actions */
   width: 120px;
   min-width: 120px;
+  max-width: 120px;
+}
+
+/* Apply same widths to table cells */
+.modern-table td:nth-child(1) { /* Checkbox */
+  width: 50px;
+  min-width: 50px;
+  max-width: 50px;
+}
+
+.modern-table td:nth-child(2) { /* MC_CODE */
+  width: 120px;
+  min-width: 120px;
+  max-width: 120px;
+}
+
+.modern-table td:nth-child(3) { /* FG_SEG */
+  width: 100px;
+  min-width: 100px;
+  max-width: 100px;
+}
+
+.modern-table td:nth-child(4) { /* FG_DIV */
+  width: 100px;
+  min-width: 100px;
+  max-width: 100px;
+}
+
+.modern-table td:nth-child(5) { /* MJ_CAT */
+  width: 150px;
+  min-width: 150px;
+  max-width: 150px;
+}
+
+.modern-table td:nth-child(6) { /* ARTICLE_DESCRIPTION */
+  width: 200px;
+  min-width: 200px;
+  max-width: 200px;
+}
+
+.modern-table td:nth-child(7) { /* STATUS */
+  width: 100px;
+  min-width: 100px;
+  max-width: 100px;
+}
+
+.modern-table td:nth-child(8) { /* Images */
+  width: 120px;
+  min-width: 120px;
+  max-width: 120px;
+}
+
+.modern-table td:nth-child(9) { /* Actions */
+  width: 120px;
+  min-width: 120px;
+  max-width: 120px;
 }
 
 /* Scrollable columns styling */
@@ -1695,4 +1759,33 @@
     width: 12px;
     height: 12px;
   }
+}
+
+/* Ensure proper content handling in fixed layout */
+.modern-table th,
+.modern-table td {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  box-sizing: border-box;
+}
+
+/* Allow text wrapping for description column */
+.modern-table th:nth-child(6),
+.modern-table td:nth-child(6) {
+  white-space: normal;
+  word-wrap: break-word;
+  overflow-wrap: break-word;
+}
+
+/* Ensure images column has proper sizing */
+.modern-table th:nth-child(8),
+.modern-table td:nth-child(8) {
+  text-align: center;
+}
+
+/* Ensure actions column has proper sizing */
+.modern-table th:nth-child(9),
+.modern-table td:nth-child(9) {
+  text-align: center;
 }

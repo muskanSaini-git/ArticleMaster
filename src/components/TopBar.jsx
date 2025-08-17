@@ -1,11 +1,9 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { FaBars, FaSearch, FaBell, FaUser, FaCog, FaHome, FaSignOutAlt, FaUserCircle, FaChevronDown } from 'react-icons/fa';
-import Profile from './Profile';
 import './TopBar.css';
 
-const TopBar = ({ onSidebarToggle, currentPage }) => {
+const TopBar = ({ onSidebarToggle, currentPage, onPageChange }) => {
   const [showProfileDropdown, setShowProfileDropdown] = useState(false);
-  const [showProfileModal, setShowProfileModal] = useState(false);
   const profileRef = useRef(null);
 
   // Close dropdown when clicking outside
@@ -35,7 +33,7 @@ const TopBar = ({ onSidebarToggle, currentPage }) => {
   };
 
   const handleViewProfile = () => {
-    setShowProfileModal(true);
+    onPageChange('profile');
     setShowProfileDropdown(false);
   };
 
@@ -113,11 +111,6 @@ const TopBar = ({ onSidebarToggle, currentPage }) => {
         </div>
       </div>
 
-      {/* Profile Modal */}
-      <Profile 
-        isOpen={showProfileModal} 
-        onClose={() => setShowProfileModal(false)} 
-      />
     </>
   );
 };

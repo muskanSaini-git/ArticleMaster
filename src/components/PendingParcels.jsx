@@ -9,10 +9,10 @@ import GridView from './GridView';
 import './PendingParcels.css';
 import './UnifiedModal.css';
 
-// Generate static sample data for pending parcels
-const generatePendingData = () => {
+// Generate static sample data for articles based on role
+const generateArticleData = (userRole) => {
   const data = [];
-  const segments = ['SEG-A', 'SEG-B', 'SEG-C', 'SEG-D'];
+  const segments = ['SEG-A', 'SEG-B', 'SEG-C', 'DIV-4'];
   const divisions = ['DIV-1', 'DIV-2', 'DIV-3', 'DIV-4'];
   const categories = ['Casual Wear', 'Formal Wear', 'Sportswear', 'Outerwear'];
   const descriptions = [
@@ -28,76 +28,90 @@ const generatePendingData = () => {
     'Work Uniform'
   ];
 
+  // Generate different statuses based on role
+  const getStatusForRole = (i, role) => {
+    if (role === 'article_creation') {
+      return ['Pending', 'Sent', 'Approved PO', 'Approved Merchant', 'Approved Admin', 'Rejected PO', 'Rejected Merchant', 'Rejected Admin'][i % 8];
+    } else if (role === 'approval') {
+      // For approval role, show all possible statuses to see the full picture
+      return ['Draft', 'Pending', 'Sent', 'Approved PO', 'Approved Merchant', 'Approved Admin', 'Rejected PO', 'Rejected Merchant', 'Rejected Admin'][i % 9];
+    } else { // admin
+      // For admin role, show all possible statuses
+      return ['Draft', 'Pending', 'Sent', 'Approved PO', 'Approved Merchant', 'Approved Admin', 'Rejected PO', 'Rejected Merchant', 'Rejected Admin'][i % 9];
+    }
+  };
+
   for (let i = 1; i <= 100; i++) {
     const segment = segments[i % 4];
     const division = divisions[i % 4];
     const category = categories[i % 4];
     const description = descriptions[i % 10];
+    const status = getStatusForRole(i, userRole);
 
-    data.push({
-      ArticleId: i,
-      MC_CODE: `MC${String(i).padStart(3, '0')}`,
-      SEG: segment,
-      DIV: division,
-      MAJ_CAT_NM: category,
-      ARTICLE_DESCRIPTION: `${description} - Style ${i}`,
-      STATUS: 'Pending',
-      priority: ['high', 'medium', 'low'][i % 3],
-      Images: [
-        `https://picsum.photos/100/100?random=${i + 300}`,
-        `https://picsum.photos/100/100?random=${i + 301}`,
-        `https://picsum.photos/100/100?random=${i + 302}`
-      ],
-      // Additional fields for completeness
-      ART_CR_DATE: '2024-01-15',
-      SUB_DIV: `SUB-${i}`,
-      MC_DESC: `Description for MC${String(i).padStart(3, '0')}`,
-      MC_ST: 'Active',
-      GEN_ART: `ART-${i}`,
-      ARTICLE_DESCRIPTION_LONG: `Detailed description for ${description} - Style ${i}`,
-      HSN_CODE: `HSN${String(i).padStart(4, '0')}`,
-      VND_CD: `VND${String(i).padStart(3, '0')}`,
-      VND_NM: `Vendor ${i}`,
-      VND_DZN_NO: `DZN-${i}`,
-      MRP: Math.floor(Math.random() * 5000) + 500,
-      NOA: Math.floor(Math.random() * 100) + 10,
-      RNG_SEG: `RNG-${i}`,
-      MAIN_MVGR: `MVGR-${i}`,
-      MACRO_MVGR: `MACRO-${i}`,
-      YARN: `Yarn-${i}`,
-      FAB_WEAVE: `Weave-${i}`,
-      FAB2: `Fabric-${i}`,
-      FAB_WEAVE_2: `Weave2-${i}`,
-      FAB_STYLE: `Style-${i}`,
-      FAB_SUB_STYLE: `SubStyle-${i}`,
-      SHADE: `Shade-${i}`,
-      LYCRA: `Lycra-${i}`,
-      GSM: Math.floor(Math.random() * 300) + 100,
-      COUNT: Math.floor(Math.random() * 50) + 10,
-      OUNZ: Math.floor(Math.random() * 20) + 5,
-      FAB_WEIGHT: Math.floor(Math.random() * 500) + 100,
-      COLLAR: `Collar-${i}`,
-      NECK_BAND_STYLE: `Neck-${i}`,
-      COLLAR_SIZE: `Size-${i}`,
-      PLACKET_CHANGING: `Placket-${i}`,
-      BLT_MAIN_STYLE: `Belt-${i}`,
-      SUB_STYLE_BLT: `SubBelt-${i}`,
-      BLT_SIZE: `BeltSize-${i}`,
-      SLEEVES_MAIN_STYLE: `Sleeve-${i}`,
-      BTFOLD: `Fold-${i}`,
-      SET: `Set-${i}`,
-      NECK_BAND: `Band-${i}`,
-      FO_BTN_STYLE: `Button-${i}`,
-      POCKET: `Pocket-${i}`,
-      FIT: `Fit-${i}`,
-      PATTERN: `Pattern-${i}`,
-      LENGTH: `Length-${i}`,
-      MAIN_STYLE: `MainStyle-${i}`,
-      DC_SUB_STYLE: `DCSub-${i}`,
-      DC_EDGE_LOOP: `Edge-${i}`,
-      BTN_MAIN_MVGR: `BtnMVGR-${i}`,
-      SUB_STYLE_BTN_CLR: `BtnColor-${i}`,
-      ZIP: `Zip-${i}`,
+          data.push({
+        ArticleId: i,
+        MC_CODE: `MC${String(i).padStart(3, '0')}`,
+        SEG: segment,
+        DIV: division,
+        MAJ_CAT_NM: category,
+        ARTICLE_DESCRIPTION: `${description} - Style ${i}`,
+        STATUS: status,
+        priority: ['high', 'medium', 'low'][i % 3],
+        Images: [
+          `https://picsum.photos/100/100?random=${i + 300}`,
+          `https://picsum.photos/100/100?random=${i + 301}`,
+          `https://picsum.photos/100/100?random=${i + 302}`
+        ],
+        // Additional fields for completeness
+        ART_CR_DATE: new Date(2024, 0, 15 + (i % 30)).toISOString().split('T')[0], // Different dates
+        SUB_DIV: `SUB-${i}`,
+        MC_DESC: `Description for MC${String(i).padStart(3, '0')}`,
+        MC_ST: 'Active',
+        GEN_ART: `ART-${i}`,
+        ARTICLE_DESCRIPTION_LONG: `Detailed description for ${description} - Style ${i}`,
+        HSN_CODE: `HSN${String(i).padStart(4, '0')}`,
+        VND_CD: `VND${String(i).padStart(3, '0')}`,
+        VND_NM: `Vendor ${i}`,
+        VND_DZN_NO: `DZN-${i}`,
+        MRP: Math.floor(Math.random() * 5000) + 500,
+        NOA: Math.floor(Math.random() * 100) + 10,
+        RNG_SEG: `RNG-${i}`,
+        MAIN_MVGR: `MVGR-${i}`,
+        MACRO_MVGR: `MACRO-${i}`,
+        YARN: `Yarn-${i}`,
+        FAB_WEAVE: `Weave-${i}`,
+        FAB2: `Fabric-${i}`,
+        FAB_WEAVE_2: `Weave2-${i}`,
+        FAB_STYLE: `Style-${i}`,
+        FAB_SUB_STYLE: `SubStyle-${i}`,
+        SHADE: `Shade-${i}`,
+        LYCRA: `Lycra-${i}`,
+        GSM: Math.floor(Math.random() * 300) + 100,
+        COUNT: Math.floor(Math.random() * 50) + 10,
+        OUNZ: Math.floor(Math.random() * 20) + 5,
+        FAB_WEIGHT: Math.floor(Math.random() * 500) + 100,
+        COLLAR: `Collar-${i}`,
+        NECK_BAND_STYLE: `Neck-${i}`,
+        COLLAR_SIZE: `Size-${i}`,
+        PLACKET_CHANGING: `Placket-${i}`,
+        BLT_MAIN_STYLE: `Belt-${i}`,
+        SUB_STYLE_BLT: `SubBelt-${i}`,
+        BLT_SIZE: `BeltSize-${i}`,
+        SLEEVES_MAIN_STYLE: `Sleeve-${i}`,
+        BTFOLD: `Fold-${i}`,
+        SET: `Set-${i}`,
+        NECK_BAND: `Band-${i}`,
+        FO_BTN_STYLE: `Button-${i}`,
+        POCKET: `Pocket-${i}`,
+        FIT: `Fit-${i}`,
+        PATTERN: `Pattern-${i}`,
+        LENGTH: `Length-${i}`,
+        MAIN_STYLE: `MainStyle-${i}`,
+        DC_SUB_STYLE: `DCSub-${i}`,
+        DC_EDGE_LOOP: `Edge-${i}`,
+        BTN_MAIN_MVGR: `BtnMVGR-${i}`,
+        SUB_STYLE_BTN_CLR: `BtnColor-${i}`,
+        ZIP: `Zip-${i}`,
       ZIP_COL: `ZipColor-${i}`,
       ADD_ACC: `Acc-${i}`,
       ACC_COL: `AccColor-${i}`,
@@ -146,7 +160,7 @@ const statusBadge = (status) => {
   return <span className="modern-status-badge modern-status-pending"><FaClock /> {status}</span>;
 };
 
-const PendingParcels = ({ onSidebarToggle }) => {
+const PendingParcels = ({ onSidebarToggle, userRole }) => {
   const [selectedParcel, setSelectedParcel] = useState(null);
   const [editParcel, setEditParcel] = useState(null);
   const [toastMessage, setToastMessage] = useState('');
@@ -161,12 +175,14 @@ const PendingParcels = ({ onSidebarToggle }) => {
   const [imageErrors, setImageErrors] = useState([]);
   const [actionLoading, setActionLoading] = useState(null);
   const [rejectionReason, setRejectionReason] = useState('');
-  const [selectedItems, setSelectedItems] = new Set();
+  const [selectedItems, setSelectedItems] = useState(new Set());
   const [selectAll, setSelectAll] = useState(false);
   const [sortBy, setSortBy] = useState('');
   const [sortOrder, setSortOrder] = useState('asc');
   const [selectedRejectionReason, setSelectedRejectionReason] = useState('');
   const [customRejectionReason, setCustomRejectionReason] = useState('');
+  const [showReasonModal, setShowReasonModal] = useState(null);
+  const [expandedReasons, setExpandedReasons] = useState(new Set());
   const [sectionVisibility, setSectionVisibility] = useState({
     basic: true,
     garment: false,
@@ -206,7 +222,7 @@ const PendingParcels = ({ onSidebarToggle }) => {
     
     // Simulate loading delay
     setTimeout(() => {
-      const staticData = generatePendingData();
+      const staticData = generateArticleData(userRole);
       setArticleRows(staticData);
       setLoading(false);
     }, 500);
@@ -340,11 +356,12 @@ const PendingParcels = ({ onSidebarToggle }) => {
   const handleSelectAll = () => {
     if (selectAll) {
       setSelectedItems(new Set());
+      setSelectAll(false);
     } else {
-      const allIds = new Set(displayedArticles.map(parcel => parcel.ArticleId));
+      const allIds = new Set(paginatedData.map(row => row.ArticleId));
       setSelectedItems(allIds);
+      setSelectAll(true);
     }
-    setSelectAll(!selectAll);
   };
 
   const handleSelectItem = (parcelId) => {
@@ -355,6 +372,7 @@ const PendingParcels = ({ onSidebarToggle }) => {
       newSelected.add(parcelId);
     }
     setSelectedItems(newSelected);
+    setSelectAll(newSelected.size === paginatedData.length);
   };
 
   const handleBulkApprove = () => {
@@ -385,6 +403,10 @@ const PendingParcels = ({ onSidebarToggle }) => {
     }, 1000);
   };
 
+  const handleShowReason = (row) => {
+    setShowReasonModal(row);
+  };
+
   useEffect(() => {
     let filtered = articleRows;
     
@@ -396,12 +418,17 @@ const PendingParcels = ({ onSidebarToggle }) => {
       );
     }
     
-    if (filterStatus === 'high') {
-      filtered = filtered.filter(row => row.priority === 'high');
-    } else if (filterStatus === 'medium') {
-      filtered = filtered.filter(row => row.priority === 'medium');
-    } else if (filterStatus === 'low') {
-      filtered = filtered.filter(row => row.priority === 'low');
+    if (filterStatus !== 'all') {
+      filtered = filtered.filter(row => {
+        const status = row.STATUS?.toLowerCase() || '';
+        if (filterStatus === 'approved_po') return status.includes('approved po');
+        if (filterStatus === 'approved_merchant') return status.includes('approved merchant');
+        if (filterStatus === 'approved_admin') return status.includes('approved admin');
+        if (filterStatus === 'rejected_po') return status.includes('rejected po');
+        if (filterStatus === 'rejected_merchant') return status.includes('rejected merchant');
+        if (filterStatus === 'rejected_admin') return status.includes('rejected admin');
+        return status.includes(filterStatus.toLowerCase());
+      });
     }
     
     // Sorting
@@ -423,6 +450,17 @@ const PendingParcels = ({ onSidebarToggle }) => {
 
   useEffect(() => {
     loadStaticData();
+  }, [userRole]);
+
+  // Prevent body scrolling when component is active
+  useEffect(() => {
+    // Add class to body to prevent scrolling
+    document.body.classList.add('article-parcel-active');
+    
+    // Cleanup function to remove class when component unmounts
+    return () => {
+      document.body.classList.remove('article-parcel-active');
+    };
   }, []);
 
   // Filtering and pagination logic
@@ -443,11 +481,13 @@ const PendingParcels = ({ onSidebarToggle }) => {
       {loading && (
         <div className="modern-loading">
           <div className="modern-loading-spinner"></div>
-          Loading pending articles...
+          {userRole === 'article_creation' ? 'Loading pending articles...' : 
+           userRole === 'approval' ? 'Loading all articles...' : 
+           'Loading all articles...'}
         </div>
       )}
 
-      <TopBar onSidebarToggle={onSidebarToggle} currentPage="pending" />
+      <TopBar onSidebarToggle={onSidebarToggle} currentPage={userRole === 'article_creation' ? 'pending_approval' : 'all_articles'} />
       
       {/* Toast Notification */}
       {toastMessage && (
@@ -482,7 +522,9 @@ const PendingParcels = ({ onSidebarToggle }) => {
             <FaSearch className="modern-search-icon" />
             <input
               type="text"
-              placeholder="Search by MC Code, Description, Category, Segment..."
+              placeholder={userRole === 'article_creation' ? 
+                "Search my articles by MC Code, Description, Category..." : 
+                "Search all articles by MC Code, Description, Category, Status..."}
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
               onFocus={() => setSearchFocused(true)}
@@ -506,9 +548,38 @@ const PendingParcels = ({ onSidebarToggle }) => {
               onChange={(e) => setFilterStatus(e.target.value)}
             >
               <option value="all">All Status</option>
-              <option value="high">High Priority</option>
-              <option value="medium">Medium Priority</option>
-              <option value="low">Low Priority</option>
+              {userRole === 'article_creation' ? (
+                <>
+                  <option value="pending">Pending</option>
+                  <option value="sent">Sent</option>
+                  <option value="approved">Approved</option>
+                  <option value="rejected">Rejected</option>
+                </>
+              ) : userRole === 'approval' ? (
+                <>
+                  <option value="draft">Draft</option>
+                  <option value="pending">Pending</option>
+                  <option value="sent">Sent</option>
+                  <option value="approved_po">Approved PO</option>
+                  <option value="approved_merchant">Approved Merchant</option>
+                  <option value="approved_admin">Approved Admin</option>
+                  <option value="rejected_po">Rejected PO</option>
+                  <option value="rejected_merchant">Rejected Merchant</option>
+                  <option value="rejected_admin">Rejected Admin</option>
+                </>
+              ) : (
+                <>
+                  <option value="draft">Draft</option>
+                  <option value="pending">Pending</option>
+                  <option value="sent">Sent</option>
+                  <option value="approved_po">Approved PO</option>
+                  <option value="approved_merchant">Approved Merchant</option>
+                  <option value="approved_admin">Approved Admin</option>
+                  <option value="rejected_po">Rejected PO</option>
+                  <option value="rejected_merchant">Rejected Merchant</option>
+                  <option value="rejected_admin">Rejected Admin</option>
+                </>
+              )}
             </select>
 
             <div className="view-toggle">
@@ -615,7 +686,9 @@ const PendingParcels = ({ onSidebarToggle }) => {
                   {paginatedData.length === 0 ? (
                     <tr>
                       <td colSpan={mainTableColumns.length + 3}>
-                        No pending articles found.
+                        {userRole === 'article_creation' ? 'No pending articles found.' : 
+                         userRole === 'approval' ? 'No articles found.' : 
+                         'No articles found.'}
                       </td>
                     </tr>
                   ) : (
@@ -649,7 +722,20 @@ const PendingParcels = ({ onSidebarToggle }) => {
                             return (
                               <td key={colIdx} className="fixed-column" style={{ textAlign: 'center' }}>
                                 {header === "STATUS"
-                                  ? statusBadge(row[actualField])
+                                  ? (
+                                      <div className="status-with-reason">
+                                        <StatusBadge status={row[actualField]} />
+                                        {row.PENDING_REASON && (
+                                          <button
+                                            className="reason-icon-btn"
+                                            onClick={() => handleShowReason(row)}
+                                            title="View pending reason"
+                                          >
+                                            <FaInfoCircle className="reason-info-icon" />
+                                          </button>
+                                        )}
+                                      </div>
+                                    )
                                   : header === "IMAGES"
                                     ? (() => {
                                         const imagesArr = Array.isArray(row.Images) ? row.Images : [];
