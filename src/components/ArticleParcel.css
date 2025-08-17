@@ -208,14 +208,15 @@
   padding: 16px 24px;
   display: flex;
   align-items: center;
-  justify-content: space-between;
-  gap: 16px;
+  gap: 20px;
   border-bottom: 1px solid rgba(102, 126, 234, 0.1);
   position: relative;
-margin-top: 50vh;
+  margin-top: 0;
   flex-shrink: 0;
   z-index: 10;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.03);
+  flex-wrap: nowrap;
+  overflow-x: auto;
 }
 
 .modern-toolbar::after {
@@ -230,19 +231,24 @@ margin-top: 50vh;
 
 .modern-search {
   position: relative;
-  flex: 1;
-  max-width: 400px;
+  flex: 0 0 auto;
+  width: 300px;
+  display: flex;
+  align-items: center;
 }
 
 .modern-search input {
   width: 100%;
-  padding: 10px 16px 10px 40px;
+  padding: 8px 16px 8px 40px;
   border: 1px solid #e2e8f0;
   border-radius: 20px;
   font-size: 0.85rem;
   background: white;
   transition: all 0.3s ease;
   box-shadow: 0 1px 4px rgba(0, 0, 0, 0.05);
+  line-height: 1;
+  height: 32px;
+  box-sizing: border-box;
 }
 
 .modern-search input:focus {
@@ -261,6 +267,12 @@ margin-top: 50vh;
   font-size: 1rem;
   pointer-events: none;
   transition: color 0.3s ease;
+  z-index: 2;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 16px;
+  height: 16px;
 }
 
 .modern-search input:focus + .modern-search-icon {
@@ -271,6 +283,9 @@ margin-top: 50vh;
   display: flex;
   gap: 12px;
   align-items: center;
+  flex-wrap: nowrap;
+  flex-shrink: 0;
+  margin-left: auto;
 }
 
 .modern-btn {
@@ -291,6 +306,8 @@ margin-top: 50vh;
   letter-spacing: 0.2px;
   text-transform: none;
   min-height: 28px;
+  min-width: 32px;
+  white-space: nowrap;
 }
 
 .modern-btn::before {
@@ -300,12 +317,112 @@ margin-top: 50vh;
   left: -100%;
   width: 100%;
   height: 100%;
-  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+  background: linear-gradient(90deg, transparent, rgba(102, 126, 234, 0.1), transparent);
   transition: left 0.5s ease;
 }
 
 .modern-btn:hover::before {
   left: 100%;
+}
+
+.modern-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 25px rgba(102, 126, 234, 0.2);
+}
+
+.modern-btn:active {
+  transform: translateY(0);
+}
+
+/* Status filter dropdown styling */
+.modern-status-filter {
+  padding: 8px 12px;
+  border: 1px solid #e2e8f0;
+  border-radius: 8px;
+  background: white;
+  color: #374151;
+  font-size: 0.85rem;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  min-width: 120px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.05);
+  flex-shrink: 0;
+}
+
+.modern-status-filter:hover {
+  border-color: #667eea;
+  box-shadow: 0 4px 12px rgba(102, 126, 234, 0.1);
+}
+
+.modern-status-filter:focus {
+  outline: none;
+  border-color: #667eea;
+  box-shadow: 0 0 0 2px rgba(102, 126, 234, 0.1);
+}
+
+/* View toggle buttons */
+.modern-view-toggle {
+  display: flex;
+  gap: 4px;
+  align-items: center;
+  flex-shrink: 0;
+}
+
+.modern-view-btn {
+  padding: 6px 8px;
+  border: none;
+  border-radius: 6px;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+  font-size: 0.75rem;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  min-width: 32px;
+  min-height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 2px 8px rgba(102, 126, 234, 0.2);
+  flex-shrink: 0;
+}
+
+.modern-view-btn.active {
+  border: 2px solid #0ea5e9;
+  box-shadow: 0 4px 12px rgba(14, 165, 233, 0.3);
+}
+
+.modern-view-btn:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(102, 126, 234, 0.3);
+}
+
+.modern-view-btn:active {
+  transform: translateY(0);
+}
+
+/* Toolbar layout structure */
+.modern-toolbar-left {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  flex-shrink: 0;
+}
+
+.modern-toolbar-right {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex-shrink: 0;
+  margin-left: auto;
+}
+
+/* Ensure all toolbar items stay in one line */
+.modern-toolbar > * {
+  flex-shrink: 0;
 }
 
 .modern-btn-primary {
@@ -759,6 +876,8 @@ margin-top: 50vh;
 }
 
 .modern-image-thumbnail {
+  width: 60px;
+  height: 60px;
   border-radius: 8px;
   object-fit: cover;
   transition: all 0.3s ease;
@@ -771,6 +890,8 @@ margin-top: 50vh;
 }
 
 .modern-image-placeholder {
+  width: 60px;
+  height: 60px;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -780,6 +901,8 @@ margin-top: 50vh;
 }
 
 .modern-image-more {
+  width: 60px;
+  height: 60px;
   background: rgba(102, 126, 234, 0.1);
   border: 1px solid rgba(102, 126, 234, 0.2);
   border-radius: 8px;
@@ -1005,18 +1128,146 @@ margin-top: 50vh;
 /* Enhanced Responsive Design */
 @media (max-width: 768px) {
   .modern-toolbar {
-    flex-direction: column;
-    gap: 16px;
-    padding: 20px;
+    flex-direction: row !important;
+    gap: 8px !important;
+    padding: 8px 16px !important;
+    flex-wrap: nowrap !important;
+    align-items: center !important;
+    overflow-x: auto !important;
+    background: transparent !important;
+    box-shadow: none !important;
+    margin-top: 0 !important;
   }
   
   .modern-search {
-    max-width: 100%;
+    width: 120px !important;
+    flex-shrink: 0 !important;
+    display: flex !important;
+    align-items: center !important;
+  }
+  
+  .modern-search input {
+    padding: 4px 8px 4px 24px !important;
+    font-size: 10px !important;
+    height: 24px !important;
+    line-height: 1 !important;
+  }
+  
+  .modern-search-icon {
+    font-size: 10px !important;
+    left: 8px !important;
+    width: 12px !important;
+    height: 12px !important;
   }
   
   .modern-actions {
-    width: 100%;
-    justify-content: center;
+    width: auto !important;
+    justify-content: flex-end !important;
+    gap: 6px !important;
+    flex-wrap: nowrap !important;
+    margin-left: auto !important;
+  }
+  
+  .modern-btn {
+    padding: 4px 6px !important;
+    font-size: 10px !important;
+    min-width: 28px !important;
+    min-height: 28px !important;
+  }
+  
+  .modern-status-filter {
+    min-width: 80px !important;
+    padding: 4px 8px !important;
+    font-size: 10px !important;
+  }
+  
+  .modern-status-filter option {
+    display: none !important;
+  }
+  
+  .modern-view-btn {
+    padding: 4px 5px !important;
+    font-size: 10px !important;
+    min-width: 26px !important;
+    min-height: 26px !important;
+  }
+  
+  .modern-view-btn span {
+    display: none !important;
+  }
+  
+  /* Hide any text content in buttons */
+  .modern-btn span,
+  .modern-btn .btn-text,
+  .modern-btn .button-text {
+    display: none !important;
+  }
+  
+  /* Hide text in status filter */
+  .modern-status-filter span,
+  .modern-status-filter .filter-text,
+  .modern-status-filter .status-text {
+    display: none !important;
+  }
+  
+  /* Hide text in view toggle */
+  .modern-view-toggle span,
+  .modern-view-toggle .toggle-text,
+  .modern-view-toggle .view-text {
+    display: none !important;
+  }
+  
+  /* Force single line layout */
+  .modern-toolbar > * {
+    flex-shrink: 0 !important;
+    white-space: nowrap !important;
+  }
+  
+  /* Force all text to be hidden */
+  .modern-toolbar *:not(svg):not(input):not(select) {
+    font-size: 0 !important;
+    color: transparent !important;
+  }
+  
+  /* Ensure only icons and inputs are visible */
+  .modern-toolbar svg,
+  .modern-toolbar input,
+  .modern-toolbar select {
+    font-size: inherit !important;
+    color: inherit !important;
+  }
+  
+  /* Hide all text content specifically */
+  .modern-toolbar .btn-text,
+  .modern-toolbar .button-text,
+  .modern-toolbar .filter-text,
+  .modern-toolbar .status-text,
+  .modern-toolbar .toggle-text,
+  .modern-toolbar .view-text,
+  .modern-toolbar .search-text,
+  .modern-toolbar .action-text {
+    display: none !important;
+    visibility: hidden !important;
+    opacity: 0 !important;
+    width: 0 !important;
+    height: 0 !important;
+    overflow: hidden !important;
+  }
+  
+  /* Hide text in specific elements */
+  .modern-toolbar .modern-btn:not(:has(svg)),
+  .modern-toolbar .modern-status-filter:not(:has(svg)),
+  .modern-toolbar .modern-view-btn:not(:has(svg)) {
+    display: none !important;
+  }
+  
+  /* Force horizontal layout */
+  .modern-toolbar {
+    display: flex !important;
+    flex-direction: row !important;
+    flex-wrap: nowrap !important;
+    align-items: center !important;
+    justify-content: space-between !important;
   }
   
   .modern-table-container {
@@ -1041,14 +1292,281 @@ margin-top: 50vh;
     font-size: 0.8rem;
   }
   
+  /* Images smaller on tablet */
   .modern-image-thumbnail {
-    width: 50px;
-    height: 50px;
+    width: 40px;
+    height: 40px;
   }
   
   .modern-image-placeholder {
-    width: 50px;
-    height: 50px;
+    width: 40px;
+    height: 40px;
+  }
+  
+  .modern-image-more {
+    width: 40px;
+    height: 40px;
+    font-size: 10px;
+  }
+  
+  .modern-image-grid {
+    gap: 2px;
+  }
+  
+  /* Action icons smaller on tablet */
+  .modern-action-btn {
+    min-width: 28px;
+    min-height: 28px;
+    padding: 4px;
+  }
+  
+  .modern-action-btn svg {
+    width: 14px;
+    height: 14px;
+  }
+}
+
+@media (max-width: 640px) {
+  /* Hide ALL text content in toolbar */
+  .modern-toolbar * {
+    font-size: 0 !important;
+    color: transparent !important;
+  }
+  
+  /* Show only icons, inputs, and selects */
+  .modern-toolbar svg,
+  .modern-toolbar input,
+  .modern-toolbar select,
+  .modern-toolbar img {
+    font-size: inherit !important;
+    color: inherit !important;
+  }
+  
+  /* Hide all text labels */
+  .modern-toolbar .btn-text,
+  .modern-toolbar .button-text,
+  .modern-toolbar .filter-text,
+  .modern-toolbar .status-text,
+  .modern-toolbar .toggle-text,
+  .modern-toolbar .view-text,
+  .modern-toolbar .search-text,
+  .modern-toolbar .action-text,
+  .modern-toolbar .recently-added-text,
+  .modern-toolbar .recently-updated-text,
+  .modern-toolbar .show-all-text,
+  .modern-toolbar .export-text,
+  .modern-toolbar .add-new-text {
+    display: none !important;
+    visibility: hidden !important;
+    opacity: 0 !important;
+  }
+  
+  /* Make buttons smaller for tiny screens */
+  .modern-toolbar button {
+    min-width: 36px !important;
+    min-height: 36px !important;
+    padding: 6px !important;
+  }
+  
+  .modern-toolbar .modern-btn,
+  .modern-toolbar .action-btn,
+  .modern-toolbar .filter-btn {
+    width: 36px !important;
+    height: 36px !important;
+  }
+  
+  /* Force hide any remaining text */
+  .modern-toolbar span,
+  .modern-toolbar div,
+  .modern-toolbar p,
+  .modern-toolbar label {
+    font-size: 0 !important;
+    color: transparent !important;
+    display: none !important;
+  }
+  
+  /* Show only elements with icons */
+  .modern-toolbar span:has(svg),
+  .modern-toolbar div:has(svg),
+  .modern-toolbar button:has(svg) {
+    display: flex !important;
+    font-size: inherit !important;
+    color: inherit !important;
+  }
+}
+
+@media (max-width: 480px) {
+  /* Hide ALL text content in toolbar */
+  .modern-toolbar * {
+    font-size: 0 !important;
+    color: transparent !important;
+  }
+  
+  /* Show only icons, inputs, and selects */
+  .modern-toolbar svg,
+  .modern-toolbar input,
+  .modern-toolbar select,
+  .modern-toolbar img {
+    font-size: inherit !important;
+    color: inherit !important;
+  }
+  
+  /* Hide all text labels */
+  .modern-toolbar .btn-text,
+  .modern-toolbar .button-text,
+  .modern-toolbar .filter-text,
+  .modern-toolbar .status-text,
+  .modern-toolbar .toggle-text,
+  .modern-toolbar .view-text,
+  .modern-toolbar .search-text,
+  .modern-toolbar .action-text,
+  .modern-toolbar .recently-added-text,
+  .modern-toolbar .recently-updated-text,
+  .modern-toolbar .show-all-text,
+  .modern-toolbar .export-text,
+  .modern-toolbar .add-new-text {
+    display: none !important;
+    visibility: hidden !important;
+    opacity: 0 !important;
+  }
+  
+  /* Make buttons even smaller */
+  .modern-toolbar button {
+    min-width: 32px !important;
+    min-height: 32px !important;
+    padding: 4px !important;
+  }
+  
+  .modern-toolbar .modern-btn,
+  .modern-toolbar .action-btn,
+  .modern-toolbar .filter-btn {
+    width: 32px !important;
+    height: 32px !important;
+  }
+  
+  /* Force hide any remaining text */
+  .modern-toolbar span,
+  .modern-toolbar div,
+  .modern-toolbar p,
+  .modern-toolbar label {
+    font-size: 0 !important;
+    color: transparent !important;
+    display: none !important;
+  }
+  
+  /* Show only elements with icons */
+  .modern-toolbar span:has(svg),
+  .modern-toolbar div:has(svg),
+  .modern-toolbar button:has(svg) {
+    display: flex !important;
+    font-size: inherit !important;
+    color: inherit !important;
+  }
+}
+
+@media (max-width: 360px) {
+  /* Hide ALL text content in toolbar */
+  .modern-toolbar * {
+    font-size: 0 !important;
+    color: transparent !important;
+  }
+  
+  /* Show only icons, inputs, and selects */
+  .modern-toolbar svg,
+  .modern-toolbar input,
+  .modern-toolbar select,
+  .modern-toolbar img {
+    font-size: inherit !important;
+    color: inherit !important;
+  }
+  
+  /* Hide all text labels */
+  .modern-toolbar .btn-text,
+  .modern-toolbar .button-text,
+  .modern-toolbar .filter-text,
+  .modern-toolbar .status-text,
+  .modern-toolbar .toggle-text,
+  .modern-toolbar .view-text,
+  .modern-toolbar .search-text,
+  .modern-toolbar .action-text,
+  .modern-toolbar .recently-added-text,
+  .modern-toolbar .recently-updated-text,
+  .modern-toolbar .show-all-text,
+  .modern-toolbar .export-text,
+  .modern-toolbar .add-new-text {
+    display: none !important;
+    visibility: hidden !important;
+    opacity: 0 !important;
+  }
+  
+  /* Make buttons smallest for tiny screens */
+  .modern-toolbar button {
+    min-width: 28px !important;
+    min-height: 28px !important;
+    padding: 3px !important;
+  }
+  
+  .modern-toolbar .modern-btn,
+  .modern-toolbar .action-btn,
+  .modern-toolbar .filter-btn {
+    width: 28px !important;
+    height: 28px !important;
+  }
+  
+  /* Force hide any remaining text */
+  .modern-toolbar span,
+  .modern-toolbar div,
+  .modern-toolbar p,
+  .modern-toolbar label {
+    font-size: 0 !important;
+    color: transparent !important;
+    display: none !important;
+  }
+  
+  /* Show only elements with icons */
+  .modern-toolbar span:has(svg),
+  .modern-toolbar div:has(svg),
+  .modern-toolbar button:has(svg) {
+    display: flex !important;
+    font-size: inherit !important;
+    color: inherit !important;
+  }
+}
+
+/* Landscape mobile optimization */
+@media (max-width: 768px) and (orientation: landscape) {
+  .modern-toolbar {
+    padding: 10px 20px;
+    gap: 10px;
+  }
+  
+  .modern-search {
+    max-width: 180px;
+    display: flex;
+    align-items: center;
+  }
+  
+  .modern-actions {
+    gap: 8px;
+  }
+}
+
+/* Touch-friendly improvements for mobile */
+@media (max-width: 768px) {
+  .modern-btn {
+    -webkit-tap-highlight-color: transparent;
+    touch-action: manipulation;
+    min-height: 32px;
+    min-width: 32px;
+  }
+  
+  .modern-btn:active {
+    transform: scale(0.95);
+  }
+  
+  .modern-search input {
+    -webkit-tap-highlight-color: transparent;
+    touch-action: manipulation;
   }
 }
 
@@ -1208,4 +1726,152 @@ margin-top: 50vh;
   line-height: 22px;
   text-align: center;
   transition: background 0.2s;
+} 
+
+/* Hide text labels on small screens - show only icons */
+@media (max-width: 768px) {
+  /* Hide ALL text content in toolbar */
+  .modern-toolbar * {
+    font-size: 0 !important;
+    color: transparent !important;
+  }
+  
+  /* Show only icons, inputs, and selects */
+  .modern-toolbar svg,
+  .modern-toolbar input,
+  .modern-toolbar select,
+  .modern-toolbar img {
+    font-size: inherit !important;
+    color: inherit !important;
+  }
+  
+  /* Hide specific text elements */
+  .modern-toolbar .btn-text,
+  .modern-toolbar .button-text,
+  .modern-toolbar .filter-text,
+  .modern-toolbar .status-text,
+  .modern-toolbar .toggle-text,
+  .modern-toolbar .view-text,
+  .modern-toolbar .search-text,
+  .modern-toolbar .action-text,
+  .modern-toolbar .recently-added-text,
+  .modern-toolbar .recently-updated-text,
+  .modern-toolbar .show-all-text,
+  .modern-toolbar .export-text,
+  .modern-toolbar .add-new-text {
+    display: none !important;
+    visibility: hidden !important;
+    opacity: 0 !important;
+    width: 0 !important;
+    height: 0 !important;
+    overflow: hidden !important;
+  }
+  
+  /* Hide text in any button with icons */
+  .modern-toolbar button span:not(:has(svg)),
+  .modern-toolbar button div:not(:has(svg)),
+  .modern-toolbar button p:not(:has(svg)) {
+    display: none !important;
+  }
+  
+  /* Hide ALL text nodes */
+  .modern-toolbar button:not(:has(svg)) {
+    font-size: 0 !important;
+  }
+  
+  /* Make buttons icon-only */
+  .modern-toolbar button {
+    min-width: 40px !important;
+    min-height: 40px !important;
+    padding: 8px !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+  }
+  
+  /* Hide badge numbers but keep badges */
+  .modern-toolbar .badge,
+  .modern-toolbar .notification-badge,
+  .modern-toolbar .count-badge {
+    display: none !important;
+  }
+  
+  /* Ensure buttons are properly sized for icons only */
+  .modern-toolbar .modern-btn,
+  .modern-toolbar .action-btn,
+  .modern-toolbar .filter-btn {
+    width: 40px !important;
+    height: 40px !important;
+    border-radius: 8px !important;
+  }
+  
+  /* Force hide any remaining text */
+  .modern-toolbar span,
+  .modern-toolbar div,
+  .modern-toolbar p,
+  .modern-toolbar label {
+    font-size: 0 !important;
+    color: transparent !important;
+    display: none !important;
+  }
+  
+  /* Show only elements with icons */
+  .modern-toolbar span:has(svg),
+  .modern-toolbar div:has(svg),
+  .modern-toolbar button:has(svg) {
+    display: flex !important;
+    font-size: inherit !important;
+    color: inherit !important;
+  }
+  
+  /* Additional aggressive text hiding */
+  .modern-toolbar button *:not(svg) {
+    font-size: 0 !important;
+    color: transparent !important;
+  }
+  
+  /* Hide text content in buttons */
+  .modern-toolbar button {
+    text-indent: -9999px !important;
+    overflow: hidden !important;
+  }
+  
+  /* Show only SVG content */
+  .modern-toolbar button svg {
+    text-indent: 0 !important;
+    overflow: visible !important;
+    font-size: inherit !important;
+    color: inherit !important;
+  }
+  
+  /* Direct text content hiding */
+  .modern-toolbar button:contains("Recently Added"),
+  .modern-toolbar button:contains("Recently Updated"),
+  .modern-toolbar button:contains("Show All"),
+  .modern-toolbar button:contains("Export"),
+  .modern-toolbar button:contains("Add New Article") {
+    font-size: 0 !important;
+    color: transparent !important;
+  }
+  
+  /* Hide text nodes directly */
+  .modern-toolbar button {
+    position: relative !important;
+  }
+  
+  .modern-toolbar button::before,
+  .modern-toolbar button::after {
+    display: none !important;
+  }
+  
+  /* Force icon-only display */
+  .modern-toolbar button > *:not(svg) {
+    display: none !important;
+  }
+  
+  .modern-toolbar button > svg {
+    display: block !important;
+    width: 20px !important;
+    height: 20px !important;
+  }
 } 
